@@ -212,8 +212,6 @@ html,body{
     border-top:2px solid rgba(120,190,255,.35);
 }
 
-/* LANE LINES */
-
 .laneLine{
     position:absolute;
     top:0;
@@ -321,8 +319,7 @@ html,body{
     width:50px;
     height:55px;
     border-radius:9px;
-    background:
-        linear-gradient(135deg,#ff304f,#8f1635);
+    background:linear-gradient(135deg,#ff304f,#8f1635);
     border:2px solid #ff7185;
     box-shadow:
         0 0 20px rgba(255,40,80,.55),
@@ -453,12 +450,6 @@ html,body{
     margin-bottom:18px;
 }
 
-.menuText{
-    color:#c7d5f5;
-    line-height:1.8;
-    margin-bottom:25px;
-}
-
 #menuText{
     color:#c7d5f5;
     line-height:1.8;
@@ -525,10 +516,6 @@ html,body{
     .hudValue{
         font-size:16px;
     }
-
-    .moon{
-        transform:scale(.75);
-    }
 }
 
 @media(max-width:380px){
@@ -566,9 +553,7 @@ html,body{
 
 <body>
 
-<!-- =========================
-     CODE SCREEN
-========================= -->
+<!-- CODE SCREEN -->
 
 <div id="codeScreen">
 
@@ -605,9 +590,7 @@ html,body{
 </div>
 
 
-<!-- =========================
-     GAME
-========================= -->
+<!-- GAME -->
 
 <div id="game">
 
@@ -649,16 +632,12 @@ html,body{
 
     <!-- PLAYER -->
     <div id="player">
-
         <div class="head"></div>
         <div class="body"></div>
-
         <div class="arm left"></div>
         <div class="arm right"></div>
-
         <div class="leg left"></div>
         <div class="leg right"></div>
-
     </div>
 
     <!-- HUD -->
@@ -684,16 +663,10 @@ html,body{
     <!-- TOUCH -->
     <div id="touch">
 
-        <div class="touchButton" id="left">
-            ◀
-        </div>
-
-        <div class="touchButton" id="right">
-            ▶
-        </div>
+        <div class="touchButton" id="left">◀</div>
+        <div class="touchButton" id="right">▶</div>
 
     </div>
-
 
     <!-- MENU -->
     <div id="menu">
@@ -708,7 +681,7 @@ html,body{
                 🏃 Laufe so weit du kannst!<br>
                 🪙 Sammle Münzen!<br>
                 🚧 Weiche Hindernissen aus!<br>
-                ⚡ Die Geschwindigkeit steigt!
+                ⚡ Die Geschwindigkeit steigt langsam!
             </div>
 
             <button class="startButton" id="start">
@@ -725,13 +698,12 @@ html,body{
 <script>
 
 /* =========================
-   CODE SYSTEM
+   CODE
 ========================= */
 
 const SECRET_CODE = "WelcomeT13";
 
 let codeUnlocked = false;
-let gameStartedNormally = false;
 
 const codeScreen = document.getElementById("codeScreen");
 const codeInput = document.getElementById("codeInput");
@@ -739,23 +711,29 @@ const codeButton = document.getElementById("codeButton");
 const skipButton = document.getElementById("skipButton");
 const codeError = document.getElementById("codeError");
 
+
 function checkCode(){
 
-    const enteredCode = codeInput.value.trim();
+    const enteredCode =
+        codeInput.value.trim();
 
     if(enteredCode === SECRET_CODE){
 
         codeUnlocked = true;
-        gameStartedNormally = false;
 
         codeScreen.style.display = "none";
+
         codeError.textContent = "";
+
         codeInput.value = "";
 
     }else{
 
-        codeError.textContent = "❌ Falscher Code";
+        codeError.textContent =
+            "❌ Falscher Code";
+
         codeInput.value = "";
+
         codeInput.focus();
 
     }
@@ -764,54 +742,79 @@ function checkCode(){
 
 
 /* =========================
-   SKIP CODE
+   ÜBERSPRINGEN
 ========================= */
 
 skipButton.addEventListener("click",function(){
 
     codeUnlocked = false;
-    gameStartedNormally = true;
 
     codeScreen.style.display = "none";
-    codeError.textContent = "";
 
 });
 
 
-codeButton.addEventListener("click",checkCode);
+codeButton.addEventListener(
+    "click",
+    checkCode
+);
 
-codeInput.addEventListener("keydown",function(event){
 
-    if(event.key === "Enter"){
-        checkCode();
+codeInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+            checkCode();
+        }
+
     }
-
-});
+);
 
 
 /* =========================
    GAME VARIABLES
 ========================= */
 
-const player = document.getElementById("player");
+const player =
+    document.getElementById("player");
 
-const scoreDisplay = document.getElementById("score");
-const coinsDisplay = document.getElementById("coins");
-const difficultyDisplay = document.getElementById("difficulty");
+const scoreDisplay =
+    document.getElementById("score");
 
-const menu = document.getElementById("menu");
-const menuText = document.getElementById("menuText");
+const coinsDisplay =
+    document.getElementById("coins");
 
-const startButton = document.getElementById("start");
+const difficultyDisplay =
+    document.getElementById("difficulty");
+
+const menu =
+    document.getElementById("menu");
+
+const menuText =
+    document.getElementById("menuText");
+
+const startButton =
+    document.getElementById("start");
+
 
 let running = false;
 
 let lane = 1;
 
 let score = 0;
+
 let coins = 0;
 
-let speed = 5;
+
+/*
+   Sehr langsamer Start.
+   Die Geschwindigkeit steigt
+   nur ganz langsam.
+*/
+
+let speed = 4.5;
+
 let difficulty = 1;
 
 let spawnTimer = 0;
@@ -821,24 +824,34 @@ let objects = [];
 let lastTime = 0;
 
 let highscore =
-    Number(localStorage.getItem("runnerHighscore") || 0);
+    Number(
+        localStorage.getItem(
+            "runnerHighscore"
+        ) || 0
+    );
 
 
 /* =========================
    LANES
 ========================= */
 
-const lanes = [35,50,65];
+const lanes = [
+    35,
+    50,
+    65
+];
+
 
 function updatePlayer(){
 
-    player.style.left = lanes[lane] + "%";
+    player.style.left =
+        lanes[lane] + "%";
 
 }
 
 
 /* =========================
-   START GAME
+   START
 ========================= */
 
 function startGame(){
@@ -848,61 +861,111 @@ function startGame(){
     lane = 1;
 
     score = 0;
+
     coins = 0;
 
-    speed = 5;
+    speed = 4.5;
+
     difficulty = 1;
 
     spawnTimer = 0;
 
-    lastTime = performance.now();
+    lastTime =
+        performance.now();
 
-    objects.forEach(obj => obj.element.remove());
+
+    objects.forEach(function(obj){
+
+        obj.element.remove();
+
+    });
 
     objects = [];
 
+
     scoreDisplay.textContent = "0";
+
     coinsDisplay.textContent = "0";
+
     difficultyDisplay.textContent = "1";
+
 
     menu.style.display = "none";
 
+
     updatePlayer();
 
-    requestAnimationFrame(gameLoop);
+
+    requestAnimationFrame(
+        gameLoop
+    );
 
 }
 
 
 /* =========================
-   SPAWN OBJECT
+   SPAWN
 ========================= */
 
 function spawnObject(){
 
-    const element = document.createElement("div");
+    const element =
+        document.createElement("div");
+
+
+    /*
+      Hindernisse bleiben am Anfang
+      etwas seltener.
+    */
+
+    const obstacleChance =
+        Math.min(
+            0.76,
+            0.50 + difficulty * 0.012
+        );
+
 
     const isObstacle =
         Math.random() <
-        Math.min(.82,.55 + difficulty * .025);
+        obstacleChance;
+
 
     const randomLane =
-        Math.floor(Math.random() * 3);
+        Math.floor(
+            Math.random() * 3
+        );
+
 
     element.classList.add("object");
 
+
     if(isObstacle){
-        element.classList.add("obstacle");
+
+        element.classList.add(
+            "obstacle"
+        );
+
     }else{
-        element.classList.add("coin");
+
+        element.classList.add(
+            "coin"
+        );
+
     }
+
 
     element.style.left =
         lanes[randomLane] + "%";
 
-    element.style.top = "-80px";
 
-    document.getElementById("game").appendChild(element);
+    element.style.top =
+        "-80px";
+
+
+    document
+        .getElementById("game")
+        .appendChild(element);
+
 
     objects.push({
 
@@ -910,7 +973,10 @@ function spawnObject(){
 
         lane:randomLane,
 
-        type:isObstacle ? "obstacle" : "coin",
+        type:
+            isObstacle
+            ? "obstacle"
+            : "coin",
 
         y:-80
 
@@ -931,27 +997,45 @@ function checkCollision(element){
     const objectRect =
         element.getBoundingClientRect();
 
+
     return !(
-        playerRect.right < objectRect.left ||
-        playerRect.left > objectRect.right ||
-        playerRect.bottom < objectRect.top ||
-        playerRect.top > objectRect.bottom
+        playerRect.right <
+        objectRect.left ||
+
+        playerRect.left >
+        objectRect.right ||
+
+        playerRect.bottom <
+        objectRect.top ||
+
+        playerRect.top >
+        objectRect.bottom
     );
 
 }
 
 
 /* =========================
-   MOVE OBJECTS
+   OBJECTS
 ========================= */
 
 function moveObjects(delta){
 
-    for(let i=objects.length-1;i>=0;i--){
+    for(
+        let i=objects.length-1;
+        i>=0;
+        i--
+    ){
 
-        const obj = objects[i];
+        const obj =
+            objects[i];
 
-        obj.y += speed * delta * .08;
+
+        obj.y +=
+            speed *
+            delta *
+            0.08;
+
 
         obj.element.style.top =
             obj.y + "px";
@@ -962,12 +1046,15 @@ function moveObjects(delta){
         if(
             obj.type === "coin" &&
             obj.lane === lane &&
-            checkCollision(obj.element)
+            checkCollision(
+                obj.element
+            )
         ){
 
             coins++;
 
             score += 50;
+
 
             obj.element.remove();
 
@@ -983,13 +1070,14 @@ function moveObjects(delta){
         if(
             obj.type === "obstacle" &&
             obj.lane === lane &&
-            checkCollision(obj.element)
+            checkCollision(
+                obj.element
+            )
         ){
 
             /*
-              MIT CODE:
-              Hindernisse werden berührt,
-              aber der Spieler bleibt am Leben.
+              Mit Zugangscode:
+              Kein Game Over.
             */
 
             if(codeUnlocked){
@@ -1000,8 +1088,8 @@ function moveObjects(delta){
 
 
             /*
-              OHNE CODE:
-              normales Spiel.
+              Ohne Code:
+              Normales Spiel.
             */
 
             gameOver();
@@ -1011,9 +1099,12 @@ function moveObjects(delta){
         }
 
 
-        /* REMOVE */
+        /* ENTFERNEN */
 
-        if(obj.y > window.innerHeight + 100){
+        if(
+            obj.y >
+            window.innerHeight + 100
+        ){
 
             obj.element.remove();
 
@@ -1036,37 +1127,69 @@ function gameLoop(timestamp){
         return;
     }
 
+
     const delta =
-        Math.min(40,timestamp-lastTime);
+        Math.min(
+            40,
+            timestamp - lastTime
+        );
+
 
     lastTime = timestamp;
 
 
-    /* SCORE */
+    /*
+      Punkte steigen langsam.
+    */
 
-    score += .08 * speed * delta;
+    score +=
+        0.055 *
+        speed *
+        delta;
 
 
-    /* DIFFICULTY */
+    /*
+      Neues Level erst alle
+      500 Punkte.
+    */
 
     difficulty =
-        Math.floor(score / 250) + 1;
+        Math.floor(
+            score / 500
+        ) + 1;
+
+
+    /*
+      SEHR langsame
+      Geschwindigkeitssteigerung.
+    */
 
     speed =
-        5 + (difficulty - 1) * .8;
+        4.5 +
+        (difficulty - 1) *
+        0.25;
 
 
-    /* SPAWN */
+    /*
+      Hindernisse kommen
+      nur langsam häufiger.
+    */
 
     spawnTimer += delta;
 
+
     const spawnInterval =
         Math.max(
-            430,
-            950 - difficulty * 35
+            750,
+            1250 -
+            difficulty * 10
         );
 
-    if(spawnTimer >= spawnInterval){
+
+    if(
+        spawnTimer >=
+        spawnInterval
+    ){
 
         spawnObject();
 
@@ -1075,24 +1198,24 @@ function gameLoop(timestamp){
     }
 
 
-    /* OBJECTS */
-
     moveObjects(delta);
 
-
-    /* HUD */
 
     scoreDisplay.textContent =
         Math.floor(score);
 
+
     coinsDisplay.textContent =
         coins;
+
 
     difficultyDisplay.textContent =
         difficulty;
 
 
-    requestAnimationFrame(gameLoop);
+    requestAnimationFrame(
+        gameLoop
+    );
 
 }
 
@@ -1105,9 +1228,12 @@ function gameOver(){
 
     running = false;
 
+
     if(score > highscore){
 
-        highscore = Math.floor(score);
+        highscore =
+            Math.floor(score);
+
 
         localStorage.setItem(
             "runnerHighscore",
@@ -1136,13 +1262,15 @@ function gameOver(){
     startButton.textContent =
         "NOCHMAL SPIELEN";
 
-    menu.style.display = "flex";
+
+    menu.style.display =
+        "flex";
 
 }
 
 
 /* =========================
-   MOVEMENT
+   LINKS / RECHTS
 ========================= */
 
 function moveLeft(){
@@ -1150,6 +1278,7 @@ function moveLeft(){
     if(!running){
         return;
     }
+
 
     if(lane > 0){
 
@@ -1168,6 +1297,7 @@ function moveRight(){
         return;
     }
 
+
     if(lane < 2){
 
         lane++;
@@ -1180,38 +1310,42 @@ function moveRight(){
 
 
 /* =========================
-   KEYBOARD
+   TASTATUR
 ========================= */
 
-document.addEventListener("keydown",function(event){
+document.addEventListener(
+    "keydown",
+    function(event){
 
-    if(
-        event.key === "ArrowLeft" ||
-        event.key.toLowerCase() === "a"
-    ){
+        if(
+            event.key === "ArrowLeft" ||
+            event.key.toLowerCase() === "a"
+        ){
 
-        moveLeft();
+            moveLeft();
+
+        }
+
+
+        if(
+            event.key === "ArrowRight" ||
+            event.key.toLowerCase() === "d"
+        ){
+
+            moveRight();
+
+        }
 
     }
-
-
-    if(
-        event.key === "ArrowRight" ||
-        event.key.toLowerCase() === "d"
-    ){
-
-        moveRight();
-
-    }
-
-});
+);
 
 
 /* =========================
-   TOUCH CONTROLS
+   TOUCH
 ========================= */
 
-document.getElementById("left")
+document
+    .getElementById("left")
     .addEventListener(
         "pointerdown",
         function(event){
@@ -1224,7 +1358,8 @@ document.getElementById("left")
     );
 
 
-document.getElementById("right")
+document
+    .getElementById("right")
     .addEventListener(
         "pointerdown",
         function(event){
