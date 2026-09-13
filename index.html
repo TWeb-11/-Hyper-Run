@@ -2,7 +2,8 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>TWEB-11</title>
 
 <style>
@@ -12,6 +13,7 @@
     padding:0;
     user-select:none;
     -webkit-user-select:none;
+    -webkit-touch-callout:none;
 }
 
 html,body{
@@ -23,71 +25,131 @@ html,body{
     color:white;
 }
 
+body{
+    touch-action:none;
+}
+
+/* =========================
+   GAME
+========================= */
+
 #game{
     position:relative;
     width:100vw;
     height:100vh;
     overflow:hidden;
     background:
-    radial-gradient(circle at 50% 18%,#29488f,#101936 38%,#030611 80%);
+        radial-gradient(circle at 50% 20%,#294e9b 0%,#111a3a 34%,#050814 70%,#010207 100%);
 }
 
-/* Sterne */
+/* =========================
+   STARS
+========================= */
+
 .stars{
     position:absolute;
     inset:0;
+
     background-image:
-    radial-gradient(circle,white 1px,transparent 2px),
-    radial-gradient(circle,#65eaff 1px,transparent 2px);
-    background-size:90px 90px,140px 140px;
-    opacity:.5;
-    animation:stars 10s linear infinite;
+        radial-gradient(circle,#ffffff 1px,transparent 2px),
+        radial-gradient(circle,#65eaff 1px,transparent 2px),
+        radial-gradient(circle,#9e7cff 1px,transparent 2px);
+
+    background-size:
+        85px 85px,
+        130px 130px,
+        190px 190px;
+
+    opacity:.55;
+
+    animation:starsMove 12s linear infinite;
 }
 
-@keyframes stars{
-    from{transform:translateY(0)}
-    to{transform:translateY(90px)}
+@keyframes starsMove{
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(120px);
+    }
 }
 
-/* Mond */
+/* =========================
+   MOON
+========================= */
+
 .moon{
     position:absolute;
-    width:105px;
-    height:105px;
-    right:9%;
-    top:9%;
+
+    width:120px;
+    height:120px;
+
+    right:8%;
+    top:8%;
+
     border-radius:50%;
-    background:#effcff;
-    box-shadow:0 0 60px #7ddfff;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #ffffff,
+            #d9f9ff 55%,
+            #9bdfff
+        );
+
+    box-shadow:
+        0 0 25px #8beaff,
+        0 0 70px rgba(60,220,255,.55);
+
+    opacity:.95;
 }
 
-/* Stadt */
+/* =========================
+   CITY
+========================= */
+
 .city{
     position:absolute;
-    bottom:28%;
+    bottom:27%;
     width:100%;
-    height:25%;
+    height:28%;
 }
 
 .building{
     position:absolute;
     bottom:0;
+
     width:9%;
-    min-width:50px;
-    background:linear-gradient(#192b50,#080e1d);
-    border:1px solid #31558c;
+    min-width:55px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #172b52,
+            #080e1e
+        );
+
+    border:1px solid rgba(80,190,255,.5);
+
+    box-shadow:
+        0 0 18px rgba(30,120,255,.12);
 }
 
 .building:after{
     content:"";
+
     position:absolute;
-    inset:8px;
-    background:repeating-linear-gradient(
-        to bottom,
-        rgba(80,225,255,.6) 0 4px,
-        transparent 4px 17px
-    );
-    opacity:.35;
+    inset:7px;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(80,225,255,.65) 0 4px,
+            transparent 4px 17px
+        );
+
+    opacity:.45;
 }
 
 .b1{left:1%;height:80%}
@@ -99,81 +161,159 @@ html,body{
 .b7{right:23%;height:80%}
 .b8{right:34%;height:50%}
 
-/* Straße */
+/* =========================
+   ROAD
+========================= */
+
 #road{
     position:absolute;
+
     left:50%;
     bottom:-5%;
+
     transform:translateX(-50%);
-    width:80%;
-    height:78%;
-    background:linear-gradient(90deg,#080d18,#202e46,#080d18);
-    clip-path:polygon(36% 0,64% 0,100% 100%,0 100%);
+
+    width:82%;
+    height:80%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #070c18,
+            #263650,
+            #070c18
+        );
+
+    clip-path:
+        polygon(
+            36% 0,
+            64% 0,
+            100% 100%,
+            0 100%
+        );
+
     border-left:3px solid #35ddff;
     border-right:3px solid #35ddff;
+
+    box-shadow:
+        0 0 50px rgba(0,210,255,.12);
 }
 
 .lane{
     position:absolute;
+
     width:5px;
     height:100%;
-    background:repeating-linear-gradient(
-        to bottom,
-        #64eaff 0 55px,
-        transparent 55px 115px
-    );
-    animation:roadmove .5s linear infinite;
-    opacity:.6;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            #64eaff 0 55px,
+            transparent 55px 115px
+        );
+
+    animation:
+        roadmove .5s linear infinite;
+
+    opacity:.65;
 }
 
-.lane1{left:41%}
-.lane2{left:59%}
+.lane1{
+    left:41%;
+}
+
+.lane2{
+    left:59%;
+}
 
 @keyframes roadmove{
-    from{background-position:0 0}
-    to{background-position:0 115px}
+    from{
+        background-position:0 0;
+    }
+
+    to{
+        background-position:0 115px;
+    }
 }
 
-/* Spieler */
+/* =========================
+   PLAYER
+========================= */
+
 #player{
     position:absolute;
+
     width:62px;
     height:95px;
+
     left:50%;
     bottom:14%;
+
     transform:translateX(-50%);
+
     z-index:50;
-    transition:left .12s ease,bottom .2s ease;
+
+    transition:
+        left .12s ease,
+        bottom .2s ease;
+
+    filter:
+        drop-shadow(0 0 8px rgba(0,230,255,.5));
 }
 
 .head{
     position:absolute;
+
     width:31px;
     height:31px;
+
     left:15px;
     top:0;
+
     border-radius:50%;
-    background:linear-gradient(135deg,#ffe2bd,#ffbd7a);
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffe2bd,
+            #ffbd7a
+        );
+
     border:2px solid #111;
 }
 
 .body{
     position:absolute;
+
     width:42px;
     height:47px;
+
     left:10px;
     top:27px;
+
     border-radius:11px;
-    background:linear-gradient(135deg,#00eaff,#4054ff);
-    box-shadow:0 0 15px #00dfff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #00eaff,
+            #4054ff
+        );
+
+    box-shadow:
+        0 0 15px #00dfff;
 }
 
 .arm{
     position:absolute;
+
     width:9px;
     height:35px;
+
     top:32px;
+
     border-radius:8px;
+
     background:#ffca96;
 }
 
@@ -189,10 +329,14 @@ html,body{
 
 .leg{
     position:absolute;
+
     width:12px;
     height:32px;
+
     top:70px;
+
     border-radius:7px;
+
     background:#252d48;
 }
 
@@ -210,197 +354,534 @@ html,body{
     bottom:31%;
 }
 
-/* Münzen */
+/* =========================
+   COINS
+========================= */
+
 .coin{
     position:absolute;
-    width:31px;
-    height:31px;
+
+    width:32px;
+    height:32px;
+
     border-radius:50%;
-    background:radial-gradient(
-        circle,
-        #fff8a0 0 18%,
-        #ffd42a 19% 65%,
-        #ff9900 66%
-    );
+
+    background:
+        radial-gradient(
+            circle,
+            #fffbd0 0 15%,
+            #ffe02d 20% 62%,
+            #ff9d00 65%
+        );
+
+    border:2px solid #fff09a;
+
     box-shadow:
-    0 0 12px #ffd21c,
-    0 0 28px rgba(255,195,0,.7);
+        0 0 12px #ffd21c,
+        0 0 28px rgba(255,195,0,.8);
+
     z-index:35;
-    animation:spin .7s linear infinite;
+
+    animation:
+        spin .7s linear infinite,
+        coinGlow 1s ease-in-out infinite alternate;
 }
 
 @keyframes spin{
-    0%{transform:translateX(-50%) rotateY(0)}
-    50%{transform:translateX(-50%) rotateY(180deg)}
-    100%{transform:translateX(-50%) rotateY(360deg)}
+    0%{
+        transform:translateX(-50%) rotateY(0);
+    }
+
+    50%{
+        transform:translateX(-50%) rotateY(180deg);
+    }
+
+    100%{
+        transform:translateX(-50%) rotateY(360deg);
+    }
 }
 
-/* Hindernisse */
+@keyframes coinGlow{
+    from{
+        filter:brightness(1);
+    }
+
+    to{
+        filter:brightness(1.35);
+    }
+}
+
+/* =========================
+   OBSTACLES
+========================= */
+
 .obstacle{
     position:absolute;
+
     width:60px;
     height:58px;
-    border-radius:10px;
-    background:linear-gradient(135deg,#ff416c,#a20d3d);
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff416c,
+            #9e0b3b
+        );
+
     border:2px solid #ff9eb4;
-    box-shadow:0 0 20px rgba(255,40,100,.7);
+
+    box-shadow:
+        0 0 20px rgba(255,40,100,.75),
+        inset 0 0 15px rgba(255,255,255,.12);
+
     z-index:34;
 }
 
 .obstacle:before{
     content:"!";
+
     position:absolute;
+
     left:50%;
     top:50%;
-    transform:translate(-50%,-55%);
+
+    transform:
+        translate(-50%,-55%);
+
     font-size:35px;
     font-weight:bold;
+
+    color:white;
+
+    text-shadow:
+        0 0 10px #ff003c;
 }
 
-/* HUD */
+/* =========================
+   HUD
+========================= */
+
 #hud{
     position:absolute;
+
     top:18px;
     left:18px;
     right:18px;
+
     display:flex;
     justify-content:space-between;
+    gap:10px;
+
     z-index:100;
 }
 
 .box{
-    padding:9px 15px;
-    border-radius:13px;
-    background:rgba(4,9,24,.75);
-    border:1px solid #4adfff;
-    box-shadow:0 0 18px rgba(0,200,255,.2);
+    min-width:105px;
+
+    padding:10px 15px;
+
+    border-radius:15px;
+
+    background:
+        rgba(3,8,24,.72);
+
+    border:
+        1px solid rgba(80,225,255,.75);
+
+    box-shadow:
+        0 0 18px rgba(0,200,255,.2),
+        inset 0 0 12px rgba(0,200,255,.05);
+
+    backdrop-filter:blur(8px);
+
     font-weight:bold;
+
+    text-align:center;
 }
 
-#score{color:#6eeaff}
-#coins{color:#ffe35c}
-#difficulty{color:#ff70b1}
+#score{
+    color:#6eeaff;
+}
 
-/* Menü */
+#coins{
+    color:#ffe35c;
+}
+
+#difficulty{
+    color:#ff70b1;
+}
+
+/* =========================
+   MENU
+========================= */
+
 #menu{
     position:absolute;
+
     inset:0;
+
     z-index:200;
+
     display:flex;
+
     align-items:center;
     justify-content:center;
-    background:rgba(1,4,13,.8);
-    backdrop-filter:blur(10px);
+
+    padding:20px;
+
+    background:
+        rgba(1,4,13,.78);
+
+    backdrop-filter:blur(12px);
 }
 
 .menuBox{
-    width:min(90%,520px);
-    padding:40px 28px;
+    width:min(92%,540px);
+
+    padding:42px 30px;
+
     text-align:center;
-    border-radius:28px;
-    background:linear-gradient(
-        145deg,
-        rgba(15,28,65,.96),
-        rgba(5,10,25,.96)
-    );
-    border:1px solid #45ddff;
-    box-shadow:0 0 40px rgba(0,210,255,.3);
+
+    border-radius:30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15,28,65,.97),
+            rgba(5,10,25,.97)
+        );
+
+    border:
+        1px solid rgba(70,225,255,.8);
+
+    box-shadow:
+        0 0 35px rgba(0,210,255,.3),
+        inset 0 0 30px rgba(0,200,255,.05);
 }
 
 .title{
-    font-size:clamp(45px,11vw,80px);
-    letter-spacing:5px;
+    font-size:clamp(48px,11vw,82px);
+
+    letter-spacing:7px;
+
     color:#67eaff;
-    text-shadow:0 0 15px #00cfff;
-    margin-bottom:12px;
+
+    text-shadow:
+        0 0 10px #00cfff,
+        0 0 30px rgba(0,210,255,.7);
+
+    margin-bottom:15px;
+}
+
+.subtitle{
+    font-size:15px;
+    letter-spacing:4px;
+    color:#8aa6c9;
+    margin-bottom:20px;
 }
 
 .text{
     color:#c9d7ee;
-    line-height:1.6;
-    margin-bottom:28px;
+
+    line-height:1.7;
+
+    margin-bottom:30px;
+
+    font-size:16px;
 }
 
-button{
+.startButton{
+    width:100%;
+
     border:none;
-    border-radius:15px;
-    padding:15px 34px;
-    background:#59e8ff;
+
+    border-radius:16px;
+
+    padding:17px 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #62efff,
+            #4c8dff
+        );
+
     color:#031019;
+
     font-size:19px;
+
     font-weight:bold;
+
     cursor:pointer;
-    box-shadow:0 0 25px rgba(0,220,255,.5);
+
+    box-shadow:
+        0 0 25px rgba(0,220,255,.45);
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease;
 }
 
-button:active{
-    transform:scale(.94);
+.startButton:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 0 35px rgba(0,220,255,.7);
 }
+
+.startButton:active{
+    transform:scale(.97);
+}
+
+/* =========================
+   TOUCH CONTROLS
+========================= */
+
+#touch{
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:22px;
+
+    display:none;
+
+    justify-content:space-between;
+    align-items:center;
+
+    padding:
+        0
+        max(18px,env(safe-area-inset-right))
+        max(18px,env(safe-area-inset-bottom))
+        max(18px,env(safe-area-inset-left));
+
+    z-index:150;
+
+    pointer-events:none;
+}
+
+.touchGroup{
+    display:flex;
+    gap:14px;
+
+    pointer-events:auto;
+}
+
+.touchButton{
+    width:72px;
+    height:72px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:22px;
+
+    border:
+        2px solid rgba(100,235,255,.85);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15,40,75,.92),
+            rgba(5,15,35,.92)
+        );
+
+    color:white;
+
+    font-size:30px;
+    font-weight:bold;
+
+    box-shadow:
+        0 0 18px rgba(0,200,255,.3),
+        inset 0 0 15px rgba(0,220,255,.08);
+
+    backdrop-filter:blur(8px);
+
+    touch-action:manipulation;
+
+    transition:
+        transform .08s ease,
+        background .08s ease;
+}
+
+.touchButton:active{
+    transform:scale(.88);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30,100,130,.95),
+            rgba(10,45,65,.95)
+        );
+}
+
+/* Jump button is larger */
+
+#jump{
+    width:82px;
+    height:82px;
+
+    border-radius:50%;
+
+    font-size:34px;
+}
+
+/* =========================
+   HIDDEN
+========================= */
 
 .hidden{
     display:none!important;
 }
 
-/* Touch-Steuerung */
-#touch{
-    position:absolute;
-    left:0;
-    right:0;
-    bottom:22px;
-    display:none;
-    justify-content:space-between;
-    padding:0 22px;
-    z-index:150;
-}
+/* =========================
+   MOBILE
+========================= */
 
-.touchGroup{
-    display:flex;
-    gap:12px;
-}
+@media
+(hover:none)
+and (pointer:coarse)
+and (max-width:1024px){
 
-.touchButton{
-    width:64px;
-    height:64px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:50%;
-    border:1px solid #62eaff;
-    background:rgba(7,16,39,.85);
-    color:white;
-    font-size:26px;
-    box-shadow:0 0 20px rgba(0,200,255,.25);
-}
-
-.touchButton:active{
-    transform:scale(.88);
-    background:#16445a;
-}
-
-/* Touch nur auf Handy/Tablet */
-@media (hover:none) and (pointer:coarse){
     #touch{
         display:flex;
     }
+
+    .moon{
+        width:85px;
+        height:85px;
+        right:7%;
+        top:9%;
+    }
+
+    #road{
+        width:95%;
+    }
+
+    .box{
+        min-width:auto;
+        padding:9px 11px;
+        font-size:13px;
+    }
 }
 
-/* Handy */
-@media(max-width:500px){
+/* =========================
+   SMALL PHONE
+========================= */
+
+@media(max-width:600px){
+
+    #hud{
+        top:10px;
+        left:10px;
+        right:10px;
+
+        gap:6px;
+    }
+
+    .box{
+        padding:8px 9px;
+        font-size:12px;
+        border-radius:11px;
+    }
+
+    .menuBox{
+        padding:32px 22px;
+        border-radius:25px;
+    }
+
+    .title{
+        font-size:clamp(42px,14vw,65px);
+        letter-spacing:4px;
+    }
+
+    .subtitle{
+        font-size:11px;
+        letter-spacing:3px;
+    }
+
+    .text{
+        font-size:14px;
+    }
+
+    .touchButton{
+        width:66px;
+        height:66px;
+        border-radius:19px;
+        font-size:27px;
+    }
+
+    #jump{
+        width:76px;
+        height:76px;
+    }
+
+    #player{
+        transform:translateX(-50%) scale(.9);
+    }
+}
+
+/* =========================
+   VERY SMALL PHONE
+========================= */
+
+@media(max-width:380px){
 
     .touchButton{
         width:58px;
         height:58px;
-        font-size:23px;
+        font-size:24px;
+    }
+
+    #jump{
+        width:68px;
+        height:68px;
+    }
+
+    #touch{
+        bottom:12px;
     }
 
     .box{
-        padding:8px 10px;
-        font-size:13px;
+        font-size:11px;
+        padding:7px;
+    }
+}
+
+/* =========================
+   TABLET LANDSCAPE
+========================= */
+
+@media
+(hover:none)
+and (pointer:coarse)
+and (min-width:700px)
+and (max-width:1024px){
+
+    .touchButton{
+        width:82px;
+        height:82px;
+        font-size:34px;
     }
 
-    .moon{
-        width:75px;
-        height:75px;
+    #jump{
+        width:92px;
+        height:92px;
+    }
+
+    #touch{
+        bottom:28px;
+        padding-left:35px;
+        padding-right:35px;
+    }
+
+    .box{
+        font-size:15px;
+        padding:11px 17px;
     }
 }
 </style>
@@ -410,134 +891,247 @@ button:active{
 
 <div id="game">
 
-<div class="stars"></div>
-<div class="moon"></div>
+    <div class="stars"></div>
 
-<div class="city">
-<div class="building b1"></div>
-<div class="building b2"></div>
-<div class="building b3"></div>
-<div class="building b4"></div>
-<div class="building b5"></div>
-<div class="building b6"></div>
-<div class="building b7"></div>
-<div class="building b8"></div>
-</div>
+    <div class="moon"></div>
 
-<div id="road">
-<div class="lane lane1"></div>
-<div class="lane lane2"></div>
-</div>
+    <div class="city">
+        <div class="building b1"></div>
+        <div class="building b2"></div>
+        <div class="building b3"></div>
+        <div class="building b4"></div>
+        <div class="building b5"></div>
+        <div class="building b6"></div>
+        <div class="building b7"></div>
+        <div class="building b8"></div>
+    </div>
 
-<div id="player">
-<div class="head"></div>
-<div class="body"></div>
-<div class="arm left"></div>
-<div class="arm right"></div>
-<div class="leg left"></div>
-<div class="leg right"></div>
-</div>
+    <div id="road">
+        <div class="lane lane1"></div>
+        <div class="lane lane2"></div>
+    </div>
 
-<div id="hud">
-<div class="box">🏆 <span id="score">0</span></div>
-<div class="box">🪙 <span id="coins">0</span></div>
-<div class="box">⚡ <span id="difficulty">1</span></div>
-</div>
+    <!-- PLAYER -->
 
-<div id="touch">
+    <div id="player">
 
-<div class="touchGroup">
-<div class="touchButton" id="left">◀</div>
-<div class="touchButton" id="right">▶</div>
-</div>
+        <div class="head"></div>
 
-<div class="touchGroup">
-<div class="touchButton" id="jump">▲</div>
-</div>
+        <div class="body"></div>
 
-</div>
+        <div class="arm left"></div>
+        <div class="arm right"></div>
 
-<div id="menu">
+        <div class="leg left"></div>
+        <div class="leg right"></div>
 
-<div class="menuBox">
+    </div>
 
-<div class="title">TWEB-11</div>
+    <!-- HUD -->
 
-<div class="text" id="menuText">
-🏃 Laufe so weit du kannst!<br>
-🪙 Sammle Münzen!<br>
-🚧 Weiche Hindernissen aus!<br><br>
-⚡ <b>Das Spiel wird immer schwieriger!</b>
-</div>
+    <div id="hud">
 
-<button id="start">
-SPIEL STARTEN
-</button>
+        <div class="box">
+            🏆 <span id="score">0</span>
+        </div>
 
-</div>
+        <div class="box">
+            🪙 <span id="coins">0</span>
+        </div>
 
-</div>
+        <div class="box">
+            ⚡ <span id="difficulty">1</span>
+        </div>
+
+    </div>
+
+    <!-- TOUCH CONTROLS -->
+
+    <div id="touch">
+
+        <div class="touchGroup">
+
+            <div
+                class="touchButton"
+                id="left">
+                ◀
+            </div>
+
+            <div
+                class="touchButton"
+                id="right">
+                ▶
+            </div>
+
+        </div>
+
+        <div class="touchGroup">
+
+            <div
+                class="touchButton"
+                id="jump">
+                ▲
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MENU -->
+
+    <div id="menu">
+
+        <div class="menuBox">
+
+            <div class="title">
+                TWEB-11
+            </div>
+
+            <div class="subtitle">
+                ENDLESS RUN
+            </div>
+
+            <div
+                class="text"
+                id="menuText">
+
+                🏃 Laufe so weit du kannst!<br>
+
+                🪙 Sammle Münzen!<br>
+
+                🚧 Weiche Hindernissen aus!<br>
+
+                ⚡ Das Spiel wird immer schwieriger!
+
+            </div>
+
+            <button
+                class="startButton"
+                id="start">
+
+                SPIEL STARTEN
+
+            </button>
+
+        </div>
+
+    </div>
 
 </div>
 
 <script>
 
-const game=document.getElementById("game");
-const player=document.getElementById("player");
+/* =========================
+   ELEMENTS
+========================= */
 
-const scoreText=document.getElementById("score");
-const coinText=document.getElementById("coins");
-const difficultyText=document.getElementById("difficulty");
+const game =
+    document.getElementById("game");
 
-const menu=document.getElementById("menu");
-const menuText=document.getElementById("menuText");
-const startButton=document.getElementById("start");
+const player =
+    document.getElementById("player");
 
-let running=false;
-let lane=1;
+const scoreText =
+    document.getElementById("score");
 
-let score=0;
-let coins=0;
+const coinText =
+    document.getElementById("coins");
 
-let speed=5;
-let difficulty=1;
+const difficultyText =
+    document.getElementById("difficulty");
 
-let spawnTimer=0;
-let objects=[];
+const menu =
+    document.getElementById("menu");
 
-let jumping=false;
-let lastTime=0;
+const menuText =
+    document.getElementById("menuText");
 
-let highscore=
-Number(localStorage.getItem("tweb11Highscore")||0);
+const startButton =
+    document.getElementById("start");
 
-const lanes=[35,50,65];
+
+/* =========================
+   GAME VARIABLES
+========================= */
+
+let running = false;
+
+let lane = 1;
+
+let score = 0;
+
+let coins = 0;
+
+let speed = 5;
+
+let difficulty = 1;
+
+let spawnTimer = 0;
+
+let objects = [];
+
+let jumping = false;
+
+let lastTime = 0;
+
+let highscore =
+    Number(
+        localStorage.getItem("tweb11Highscore") || 0
+    );
+
+
+const lanes = [
+    35,
+    50,
+    65
+];
+
+
+/* =========================
+   PLAYER
+========================= */
 
 function updatePlayer(){
 
-    player.style.left=lanes[lane]+"%";
+    player.style.left =
+        lanes[lane] + "%";
 
 }
 
+
+/* =========================
+   START GAME
+========================= */
+
 function startGame(){
 
-    objects.forEach(o=>o.el.remove());
-    objects=[];
+    objects.forEach(
+        object => object.el.remove()
+    );
 
-    running=true;
+    objects = [];
 
-    lane=1;
-    score=0;
-    coins=0;
-    speed=5;
-    difficulty=1;
+    running = true;
 
-    spawnTimer=20;
-    jumping=false;
+    lane = 1;
 
-    scoreText.textContent="0";
-    coinText.textContent="0";
-    difficultyText.textContent="1";
+    score = 0;
+
+    coins = 0;
+
+    speed = 5;
+
+    difficulty = 1;
+
+    spawnTimer = 20;
+
+    jumping = false;
+
+    scoreText.textContent = "0";
+
+    coinText.textContent = "0";
+
+    difficultyText.textContent = "1";
 
     player.classList.remove("jumping");
 
@@ -545,115 +1139,173 @@ function startGame(){
 
     menu.classList.add("hidden");
 
-    lastTime=performance.now();
+    lastTime =
+        performance.now();
 
     requestAnimationFrame(gameLoop);
 
 }
+
+
+/* =========================
+   GAME LOOP
+========================= */
 
 function gameLoop(time){
 
-    if(!running)return;
+    if(!running)
+        return;
 
-    const delta=
-    Math.min((time-lastTime)/16.67,3);
+    const delta =
+        Math.min(
+            (time-lastTime)/16.67,
+            3
+        );
 
-    lastTime=time;
+    lastTime = time;
 
-    score+=0.08*speed*delta;
 
-    /* Schwierigkeit steigt alle 250 Punkte */
+    /* SCORE */
 
-    const newDifficulty=
-    Math.floor(score/250)+1;
+    score +=
+        0.08 *
+        speed *
+        delta;
 
-    if(newDifficulty!==difficulty){
 
-        difficulty=newDifficulty;
+    /* DIFFICULTY */
 
-        difficultyText.textContent=difficulty;
+    const newDifficulty =
+        Math.floor(score / 250) + 1;
 
+
+    if(newDifficulty !== difficulty){
+
+        difficulty =
+            newDifficulty;
+
+        difficultyText.textContent =
+            difficulty;
     }
 
-    /* Geschwindigkeit steigt */
 
-    speed=
-    5+(difficulty-1)*0.8;
+    /* SPEED */
 
-    /* Hindernisse kommen immer schneller */
+    speed =
+        5 +
+        (difficulty-1)*0.8;
 
-    spawnTimer-=delta;
 
-    if(spawnTimer<=0){
+    /* SPAWN */
+
+    spawnTimer -= delta;
+
+
+    if(spawnTimer <= 0){
 
         spawnObject();
 
-        const minimum=
-        Math.max(20,34-difficulty);
 
-        const maximum=
-        Math.max(minimum,70-difficulty*4);
+        const minimum =
+            Math.max(
+                20,
+                34-difficulty
+            );
 
-        spawnTimer=
-        minimum+
-        Math.random()*(maximum-minimum);
 
+        const maximum =
+            Math.max(
+                minimum,
+                70-difficulty*4
+            );
+
+
+        spawnTimer =
+            minimum +
+            Math.random() *
+            (maximum-minimum);
     }
+
 
     moveObjects(delta);
 
-    scoreText.textContent=
-    Math.floor(score);
+
+    scoreText.textContent =
+        Math.floor(score);
+
 
     requestAnimationFrame(gameLoop);
 
 }
 
+
+/* =========================
+   SPAWN
+========================= */
+
 function spawnObject(){
 
-    /*
-    Mit höherer Schwierigkeit
-    werden mehr Hindernisse erzeugt.
-    */
+    const obstacleChance =
+        Math.min(
+            .82,
+            .55 + difficulty*.025
+        );
 
-    const obstacleChance=
-    Math.min(
-        .82,
-        .55+difficulty*.025
-    );
 
-    const isCoin=
-    Math.random()>obstacleChance;
+    const isCoin =
+        Math.random() >
+        obstacleChance;
 
-    const element=
-    document.createElement("div");
 
-    element.className=
-    isCoin?"coin":"obstacle";
+    const element =
+        document.createElement("div");
 
-    const randomLane=
-    Math.floor(Math.random()*3);
 
-    element.style.left=
-    lanes[randomLane]+"%";
+    element.className =
+        isCoin
+        ? "coin"
+        : "obstacle";
 
-    element.style.transform=
-    "translateX(-50%)";
 
-    element.style.top="-90px";
+    const randomLane =
+        Math.floor(
+            Math.random()*3
+        );
+
+
+    element.style.left =
+        lanes[randomLane] + "%";
+
+
+    element.style.transform =
+        "translateX(-50%)";
+
+
+    element.style.top =
+        "-90px";
+
 
     game.appendChild(element);
+
 
     objects.push({
 
         el:element,
+
         y:-90,
+
         lane:randomLane,
+
         coin:isCoin
 
     });
 
 }
+
+
+/* =========================
+   MOVE OBJECTS
+========================= */
 
 function moveObjects(delta){
 
@@ -663,36 +1315,46 @@ function moveObjects(delta){
         i--
     ){
 
-        const object=objects[i];
+        const object =
+            objects[i];
 
-        object.y+=speed*delta;
 
-        object.el.style.top=
-        object.y+"px";
+        object.y +=
+            speed*delta;
+
+
+        object.el.style.top =
+            object.y + "px";
+
 
         if(checkCollision(object)){
+
+            /* COIN */
 
             if(object.coin){
 
                 coins++;
-                score+=50;
 
-                coinText.textContent=
-                coins;
+                score += 50;
+
+                coinText.textContent =
+                    coins;
 
                 object.el.remove();
 
                 objects.splice(i,1);
 
                 continue;
-
             }
+
+
+            /* OBSTACLE */
 
             if(jumping){
 
                 continue;
-
             }
+
 
             gameOver();
 
@@ -700,9 +1362,10 @@ function moveObjects(delta){
 
         }
 
+
         if(
-            object.y>
-            window.innerHeight+100
+            object.y >
+            window.innerHeight + 100
         ){
 
             object.el.remove();
@@ -715,38 +1378,76 @@ function moveObjects(delta){
 
 }
 
+
+/* =========================
+   COLLISION
+========================= */
+
 function checkCollision(object){
 
-    if(object.lane!==lane)
-    return false;
+    if(
+        object.lane !== lane
+    )
+        return false;
 
-    const p=
-    player.getBoundingClientRect();
 
-    const o=
-    object.el.getBoundingClientRect();
+    const p =
+        player.getBoundingClientRect();
 
-    const padding=9;
+
+    const o =
+        object.el.getBoundingClientRect();
+
+
+    const padding = 9;
+
 
     return(
-        p.left+padding<o.right-padding &&
-        p.right-padding>o.left+padding &&
-        p.top+padding<o.bottom-padding &&
-        p.bottom-padding>o.top+padding
+
+        p.left+padding <
+        o.right-padding
+
+        &&
+
+        p.right-padding >
+        o.left+padding
+
+        &&
+
+        p.top+padding <
+        o.bottom-padding
+
+        &&
+
+        p.bottom-padding >
+        o.top+padding
+
     );
 
 }
 
+
+/* =========================
+   GAME OVER
+========================= */
+
 function gameOver(){
 
-    running=false;
+    running = false;
 
-    const finalScore=
-    Math.floor(score);
 
-    if(finalScore>highscore){
+    const finalScore =
+        Math.floor(score);
 
-        highscore=finalScore;
+
+    if(
+        finalScore >
+        highscore
+    ){
+
+        highscore =
+            finalScore;
+
 
         localStorage.setItem(
             "tweb11Highscore",
@@ -755,25 +1456,50 @@ function gameOver(){
 
     }
 
-    menuText.innerHTML=
-    "💥 <b>GAME OVER</b> 💥<br><br>"+
-    "🏆 Score: <b>"+finalScore+"</b><br>"+
-    "🪙 Münzen: <b>"+coins+"</b><br>"+
-    "🏅 Highscore: <b>"+highscore+"</b><br><br>"+
-    "⚡ Schwierigkeit: <b>"+difficulty+"</b>";
 
-    startButton.textContent=
-    "NOCHMAL SPIELEN";
+    menuText.innerHTML =
 
-    menu.classList.remove("hidden");
+        "💥 <b>GAME OVER</b> 💥<br><br>" +
+
+        "🏆 Score: <b>" +
+        finalScore +
+        "</b><br>" +
+
+        "🪙 Münzen: <b>" +
+        coins +
+        "</b><br>" +
+
+        "🏅 Highscore: <b>" +
+        highscore +
+        "</b><br><br>" +
+
+        "⚡ Schwierigkeit: <b>" +
+        difficulty +
+        "</b>";
+
+
+    startButton.textContent =
+        "NOCHMAL SPIELEN";
+
+
+    menu.classList.remove(
+        "hidden"
+    );
 
 }
 
+
+/* =========================
+   MOVEMENT
+========================= */
+
 function moveLeft(){
 
-    if(!running)return;
+    if(!running)
+        return;
 
-    if(lane>0){
+
+    if(lane > 0){
 
         lane--;
 
@@ -783,11 +1509,14 @@ function moveLeft(){
 
 }
 
+
 function moveRight(){
 
-    if(!running)return;
+    if(!running)
+        return;
 
-    if(lane<2){
+
+    if(lane < 2){
 
         lane++;
 
@@ -797,82 +1526,153 @@ function moveRight(){
 
 }
 
+
+/* =========================
+   JUMP
+========================= */
+
 function jump(){
 
-    if(!running||jumping)return;
+    if(
+        !running ||
+        jumping
+    )
+        return;
 
-    jumping=true;
 
-    player.classList.add("jumping");
+    jumping = true;
+
+    player.classList.add(
+        "jumping"
+    );
+
 
     setTimeout(()=>{
 
-        jumping=false;
+        jumping = false;
 
-        player.classList.remove("jumping");
+        player.classList.remove(
+            "jumping"
+        );
 
     },650);
 
 }
 
-/* Tastatur */
 
-document.addEventListener("keydown",e=>{
+/* =========================
+   KEYBOARD
+========================= */
 
-    if(
-        e.key==="ArrowLeft"||
-        e.key.toLowerCase()==="a"
-    )
-    moveLeft();
+document.addEventListener(
+    "keydown",
+    e => {
 
-    if(
-        e.key==="ArrowRight"||
-        e.key.toLowerCase()==="d"
-    )
-    moveRight();
+        if(
+            e.key === "ArrowLeft" ||
+            e.key.toLowerCase() === "a"
+        ){
 
-    if(
-        e.key==="ArrowUp"||
-        e.key===" "||
-        e.key.toLowerCase()==="w"
-    ){
+            moveLeft();
 
-        e.preventDefault();
-        jump();
+        }
+
+
+        if(
+            e.key === "ArrowRight" ||
+            e.key.toLowerCase() === "d"
+        ){
+
+            moveRight();
+
+        }
+
+
+        if(
+            e.key === "ArrowUp" ||
+            e.key === " " ||
+            e.key.toLowerCase() === "w"
+        ){
+
+            e.preventDefault();
+
+            jump();
+
+        }
+
+
+        if(
+            e.key === "Enter" &&
+            !running
+        ){
+
+            startGame();
+
+        }
 
     }
+);
 
-    if(
-        e.key==="Enter"&&!running
-    )
-    startGame();
 
-});
+/* =========================
+   TOUCH
+========================= */
 
-/* Touch */
+document
+    .getElementById("left")
+    .addEventListener(
+        "pointerdown",
+        e => {
 
-document.getElementById("left")
-.addEventListener("pointerdown",e=>{
-    e.preventDefault();
-    moveLeft();
-});
+            e.preventDefault();
 
-document.getElementById("right")
-.addEventListener("pointerdown",e=>{
-    e.preventDefault();
-    moveRight();
-});
+            moveLeft();
 
-document.getElementById("jump")
-.addEventListener("pointerdown",e=>{
-    e.preventDefault();
-    jump();
-});
+        }
+    );
+
+
+document
+    .getElementById("right")
+    .addEventListener(
+        "pointerdown",
+        e => {
+
+            e.preventDefault();
+
+            moveRight();
+
+        }
+    );
+
+
+document
+    .getElementById("jump")
+    .addEventListener(
+        "pointerdown",
+        e => {
+
+            e.preventDefault();
+
+            jump();
+
+        }
+    );
+
+
+/* =========================
+   START BUTTON
+========================= */
 
 startButton.addEventListener(
     "click",
     startGame
 );
+
+
+/* =========================
+   INITIALIZE
+========================= */
 
 updatePlayer();
 
