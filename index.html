@@ -1112,120 +1112,94 @@ html,body{
 
 
 /* =========================
-   CODE SYSTEM
+   SUPABASE + CODE SYSTEM
 ========================= */
 
-const SECRET_CODE =
-    "WelcomeT13";
-
+const SUPABASE_URL = "https://gojdovvvanvebznhqtfs.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_1i9OJO4LY6_dILkcEbhCow_f64XK92v";
+const SUPABASE_FUNCTION_URL = SUPABASE_URL + "/functions/v1/HyperRun";
 
 let codeUnlocked = false;
+let hyperRunSessionId = null;
 
+async function hyperRunRequest(action, payload = {}){
+    const response = await fetch(SUPABASE_FUNCTION_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY
+        },
+        body: JSON.stringify({ action, ...payload })
+    });
 
-const codeScreen =
-    document.getElementById(
-        "codeScreen"
-    );
+    let data = {};
+    try { data = await response.json(); } catch(e) {}
 
-const codeInput =
-    document.getElementById(
-        "codeInput"
-    );
-
-const codeButton =
-    document.getElementById(
-        "codeButton"
-    );
-
-const skipButton =
-    document.getElementById(
-        "skipButton"
-    );
-
-const codeError =
-    document.getElementById(
-        "codeError"
-    );
-
-
-function checkCode(){
-
-    const enteredCode =
-        codeInput.value.trim();
-
-
-    if(
-        enteredCode ===
-        SECRET_CODE
-    ){
-
-        codeUnlocked = true;
-
-        codeScreen.style.display =
-            "none";
-
-        codeError.textContent =
-            "";
-
-        codeInput.value =
-            "";
-
+    if(!response.ok || data.success === false){
+        throw new Error(data.error || "Serverfehler");
     }
 
-    else{
-
-        codeError.textContent =
-            "❌ Falscher Code";
-
-        codeInput.value =
-            "";
-
-        codeInput.focus();
-
-    }
-
+    return data;
 }
 
+const codeScreen = document.getElementById("codeScreen");
+const codeInput = document.getElementById("codeInput");
+const codeButton = document.getElementById("codeButton");
+const skipButton = document.getElementById("skipButton");
+const codeError = document.getElementById("codeError");
 
-/* =========================
-   ÜBERSPRINGEN
-========================= */
+async function checkCode(){
+    const enteredCode = codeInput.value.trim();
 
-skipButton.addEventListener(
-    "click",
-    function(){
-
-        codeUnlocked = false;
-
-        codeScreen.style.display =
-            "none";
-
+    if(!enteredCode){
+        codeError.textContent = "❌ Bitte Code eingeben";
+        return;
     }
-);
 
+    codeButton.disabled = true;
+    codeError.textContent = "⏳ Prüfe Code...";
 
-codeButton.addEventListener(
-    "click",
-    checkCode
-);
+    try{
+        const result = await hyperRunRequest("verify_code", { code: enteredCode });
 
-
-codeInput.addEventListener(
-    "keydown",
-    function(event){
-
-        if(
-            event.key ===
-            "Enter"
-        ){
-
-            checkCode();
-
+        if(result.unlocked){
+            codeUnlocked = true;
+            codeScreen.style.display = "none";
+            codeError.textContent = "";
+            codeInput.value = "";
+        }else{
+            codeError.textContent = "❌ Falscher Code";
+            codeInput.value = "";
+            codeInput.focus();
         }
-
+    }catch(error){
+        codeError.textContent = "⚠️ Server nicht erreichbar";
+        console.error(error);
+    }finally{
+        codeButton.disabled = false;
     }
-);
+}
 
+skipButton.addEventListener("click", function(){
+    codeUnlocked = false;
+    codeScreen.style.display = "none";
+});
+
+codeButton.addEventListener("click", checkCode);
+
+codeInput.addEventListener("keydown", function(event){
+    if(event.key === "Enter") checkCode();
+});
+
+async function loadServerHighscore(){
+    try{
+        const result = await hyperRunRequest("get_highscore");
+        highscore = Number(result.highscore) || 0;
+    }catch(error){
+        console.error("Highscore konnte nicht geladen werden:", error);
+        highscore = 0;
+    }
+}
 
 /* =========================
    GAME VARIABLES
@@ -1289,12 +1263,7 @@ let objects = [];
 let lastTime = 0;
 
 
-let highscore =
-    Number(
-        localStorage.getItem(
-            "runnerHighscore"
-        ) || 0
-    );
+let highscore = 0;
 
 
 /* =========================
@@ -1320,8 +1289,23 @@ function updatePlayer(){
    START GAME
 ========================= */
 
-function startGame(){
+async function startGame(){
 
+    if(running) return;
+
+    startButton.disabled = true;
+
+    try{
+        const result = await hyperRunRequest("start");
+        hyperRunSessionId = result.sessionId;
+    }catch(error){
+        console.error(error);
+        menuText.innerHTML = "⚠️ Server nicht erreichbar.<br><br>Bitte kurz warten und erneut versuchen.";
+        startButton.disabled = false;
+        return;
+    }
+
+    startButton.disabled = false;
     running = true;
 
     lane = 1;
@@ -1723,52 +1707,47 @@ function gameLoop(
    GAME OVER
 ========================= */
 
-function gameOver(){
+async function gameOver(){
 
+    if(!running) return;
     running = false;
 
+    const finalScore = Math.floor(score);
+    const finalCoins = Math.floor(coins);
+    const finalLevel = Math.floor(finalScore / 500) + 1;
 
-    if(
-        score >
-        highscore
-    ){
+    let serverScore = finalScore;
+    let serverCoins = finalCoins;
+    let serverLevel = finalLevel;
 
-        highscore =
-            Math.floor(score);
+    if(hyperRunSessionId){
+        try{
+            const result = await hyperRunRequest("finish", {
+                sessionId: hyperRunSessionId,
+                score: finalScore,
+                coins: finalCoins
+            });
 
+            serverScore = Number(result.score) || 0;
+            serverCoins = Number(result.coins) || 0;
+            serverLevel = Number(result.level) || 1;
+            highscore = Math.max(highscore, serverScore);
+        }catch(error){
+            console.error("Runde konnte nicht gespeichert werden:", error);
+        }
 
-        localStorage.setItem(
-            "runnerHighscore",
-            highscore
-        );
-
+        hyperRunSessionId = null;
     }
 
-
     menuText.innerHTML =
-
         "💥 Runde beendet!<br><br>" +
+        "🏆 Punkte: " + serverScore +
+        "<br>🪙 Münzen: " + serverCoins +
+        "<br>⭐ Highscore: " + highscore +
+        "<br>⚡ Level: " + serverLevel;
 
-        "🏆 Punkte: " +
-        Math.floor(score) +
-
-        "<br>🪙 Münzen: " +
-        coins +
-
-        "<br>⭐ Highscore: " +
-        highscore +
-
-        "<br>⚡ Level: " +
-        difficulty;
-
-
-    startButton.textContent =
-        "NOCHMAL SPIELEN";
-
-
-    menu.style.display =
-        "flex";
-
+    startButton.textContent = "NOCHMAL SPIELEN";
+    menu.style.display = "flex";
 }
 
 
@@ -1908,6 +1887,7 @@ startButton.addEventListener(
 ========================= */
 
 updatePlayer();
+loadServerHighscore();
 
 </script>
 
