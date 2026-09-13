@@ -2,954 +2,487 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
->
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Endless Runner</title>
 
 <style>
-
-/* =====================================================
-   GRUNDLAGEN
-===================================================== */
-
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
     user-select:none;
     -webkit-user-select:none;
-    -webkit-touch-callout:none;
 }
 
-html,
-body{
+html,body{
     width:100%;
     height:100%;
     overflow:hidden;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background:#02040c;
-    color:white;
-}
-
-body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#050816;
     touch-action:none;
 }
 
-
-/* =====================================================
-   SPIEL
-===================================================== */
-
-#game{
-    position:relative;
-
-    width:100vw;
-    height:100vh;
-
-    overflow:hidden;
-
-    background:
-        radial-gradient(
-            circle at 50% 15%,
-            #4168bd 0%,
-            #1a2855 30%,
-            #080d20 65%,
-            #010208 100%
-        );
-}
-
-
-/* =====================================================
-   STERNE
-===================================================== */
-
-.stars{
-    position:absolute;
-
-    inset:0;
-
-    background-image:
-        radial-gradient(
-            circle,
-            rgba(255,255,255,.9) 1px,
-            transparent 2px
-        ),
-        radial-gradient(
-            circle,
-            rgba(95,230,255,.8) 1px,
-            transparent 2px
-        ),
-        radial-gradient(
-            circle,
-            rgba(180,130,255,.7) 1px,
-            transparent 2px
-        );
-
-    background-size:
-        75px 75px,
-        125px 125px,
-        185px 185px;
-
-    animation:
-        starsMove 12s linear infinite;
-
-    opacity:.6;
-}
-
-@keyframes starsMove{
-
-    from{
-        transform:translateY(0);
-    }
-
-    to{
-        transform:translateY(120px);
-    }
-
-}
-
-
-/* =====================================================
-   MOND
-===================================================== */
-
-.moon{
-    position:absolute;
-
-    width:115px;
-    height:115px;
-
-    top:8%;
-    right:8%;
-
-    border-radius:50%;
-
-    background:
-        radial-gradient(
-            circle at 35% 30%,
-            #ffffff,
-            #d9f9ff 55%,
-            #8cdfff
-        );
-
-    box-shadow:
-        0 0 25px #8beaff,
-        0 0 75px rgba(60,220,255,.55);
-}
-
-
-/* =====================================================
-   STADT
-===================================================== */
-
-.city{
-    position:absolute;
-
-    left:0;
-    bottom:27%;
-
-    width:100%;
-    height:28%;
-}
-
-.building{
-    position:absolute;
-
-    bottom:0;
-
-    width:9%;
-    min-width:55px;
-
-    background:
-        linear-gradient(
-            180deg,
-            #19345e,
-            #070d1c
-        );
-
-    border:
-        1px solid
-        rgba(80,205,255,.5);
-
-    box-shadow:
-        0 0 20px
-        rgba(30,130,255,.12);
-}
-
-.building::after{
-    content:"";
-
-    position:absolute;
-
-    inset:7px;
-
-    background:
-        repeating-linear-gradient(
-            to bottom,
-            rgba(80,225,255,.7) 0 4px,
-            transparent 4px 17px
-        );
-
-    opacity:.45;
-}
-
-.b1{
-    left:1%;
-    height:80%;
-}
-
-.b2{
-    left:12%;
-    height:60%;
-}
-
-.b3{
-    left:23%;
-    height:100%;
-}
-
-.b4{
-    left:34%;
-    height:55%;
-}
-
-.b5{
-    right:1%;
-    height:90%;
-}
-
-.b6{
-    right:12%;
-    height:65%;
-}
-
-.b7{
-    right:23%;
-    height:80%;
-}
-
-.b8{
-    right:34%;
-    height:50%;
-}
-
-
-/* =====================================================
-   STRASSE
-===================================================== */
-
-#road{
-    position:absolute;
-
-    left:50%;
-    bottom:-5%;
-
-    transform:translateX(-50%);
-
-    width:85%;
-    height:80%;
-
-    background:
-        linear-gradient(
-            90deg,
-            #060b17,
-            #2a3b55,
-            #060b17
-        );
-
-    clip-path:
-        polygon(
-            36% 0,
-            64% 0,
-            100% 100%,
-            0 100%
-        );
-
-    border-left:
-        3px solid #35ddff;
-
-    border-right:
-        3px solid #35ddff;
-
-    box-shadow:
-        0 0 50px
-        rgba(0,210,255,.16);
-}
-
-.lane{
-    position:absolute;
-
-    width:5px;
-    height:100%;
-
-    background:
-        repeating-linear-gradient(
-            to bottom,
-            #64eaff 0 55px,
-            transparent 55px 115px
-        );
-
-    animation:
-        roadMove .5s linear infinite;
-
-    opacity:.65;
-}
-
-.lane1{
-    left:41%;
-}
-
-.lane2{
-    left:59%;
-}
-
-@keyframes roadMove{
-
-    from{
-        background-position:0 0;
-    }
-
-    to{
-        background-position:0 115px;
-    }
-
-}
-
-
-/* =====================================================
-   SPIELER
-===================================================== */
-
-#player{
-    position:absolute;
-
-    width:62px;
-    height:95px;
-
-    left:50%;
-    bottom:14%;
-
-    transform:translateX(-50%);
-
-    z-index:50;
-
-    transition:
-        left .12s ease;
-
-    filter:
-        drop-shadow(
-            0 0 10px
-            rgba(0,230,255,.55)
-        );
-}
-
-.head{
-    position:absolute;
-
-    width:31px;
-    height:31px;
-
-    left:15px;
-    top:0;
-
-    border-radius:50%;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ffe2bd,
-            #ffbd7a
-        );
-
-    border:2px solid #111;
-}
-
-.body{
-    position:absolute;
-
-    width:42px;
-    height:47px;
-
-    left:10px;
-    top:27px;
-
-    border-radius:11px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #00eaff,
-            #4054ff
-        );
-
-    box-shadow:
-        0 0 15px #00dfff;
-}
-
-.arm{
-    position:absolute;
-
-    width:9px;
-    height:35px;
-
-    top:32px;
-
-    border-radius:8px;
-
-    background:#ffca96;
-}
-
-.arm.left{
-    left:2px;
-    transform:rotate(18deg);
-}
-
-.arm.right{
-    right:2px;
-    transform:rotate(-18deg);
-}
-
-.leg{
-    position:absolute;
-
-    width:12px;
-    height:32px;
-
-    top:70px;
-
-    border-radius:7px;
-
-    background:#252d48;
-}
-
-.leg.left{
-    left:13px;
-    transform:rotate(12deg);
-}
-
-.leg.right{
-    right:13px;
-    transform:rotate(-12deg);
-}
-
-
-/* =====================================================
-   MÜNZE
-===================================================== */
-
-.coin{
-    position:absolute;
-
-    width:32px;
-    height:32px;
-
-    border-radius:50%;
-
-    background:
-        radial-gradient(
-            circle,
-            #fffbd0 0 15%,
-            #ffe02d 20% 62%,
-            #ff9d00 65%
-        );
-
-    border:
-        2px solid #fff09a;
-
-    box-shadow:
-        0 0 12px #ffd21c,
-        0 0 28px rgba(255,195,0,.8);
-
-    z-index:35;
-
-    animation:
-        coinSpin .7s linear infinite;
-}
-
-@keyframes coinSpin{
-
-    0%{
-        transform:
-            translateX(-50%)
-            rotateY(0);
-    }
-
-    50%{
-        transform:
-            translateX(-50%)
-            rotateY(180deg);
-    }
-
-    100%{
-        transform:
-            translateX(-50%)
-            rotateY(360deg);
-    }
-
-}
-
-
-/* =====================================================
-   HINDERNIS
-===================================================== */
-
-.obstacle{
-    position:absolute;
-
-    width:60px;
-    height:58px;
-
-    border-radius:12px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ff416c,
-            #980b3b
-        );
-
-    border:
-        2px solid #ff9eb4;
-
-    box-shadow:
-        0 0 20px
-        rgba(255,40,100,.75);
-
-    z-index:34;
-}
-
-.obstacle::before{
-    content:"!";
-
-    position:absolute;
-
-    left:50%;
-    top:50%;
-
-    transform:
-        translate(-50%,-55%);
-
-    font-size:35px;
-
-    font-weight:bold;
-
-    color:white;
-
-    text-shadow:
-        0 0 10px #ff003c;
-}
-
-
-/* =====================================================
-   HUD
-===================================================== */
-
-#hud{
-    position:absolute;
-
-    top:18px;
-    left:18px;
-    right:18px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    gap:10px;
-
-    z-index:100;
-}
-
-.box{
-    min-width:105px;
-
-    padding:10px 15px;
-
-    border-radius:15px;
-
-    background:
-        rgba(3,8,24,.76);
-
-    border:
-        1px solid
-        rgba(80,225,255,.8);
-
-    box-shadow:
-        0 0 18px
-        rgba(0,200,255,.2);
-
-    backdrop-filter:blur(8px);
-
-    font-weight:bold;
-
-    text-align:center;
-}
-
-#score{
-    color:#6eeaff;
-}
-
-#coins{
-    color:#ffe35c;
-}
-
-#difficulty{
-    color:#ff70b1;
-}
-
-
-/* =====================================================
-   MOBILE / TABLET STEUERUNG
-===================================================== */
-
-#touch{
-    position:absolute;
-
-    left:0;
-    right:0;
-
-    bottom:25px;
-
-    display:none;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    padding:
-        0 30px
-        max(20px,env(safe-area-inset-bottom));
-
-    z-index:150;
-
-    pointer-events:none;
-}
-
-.touchButton{
-    width:95px;
-    height:95px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    border-radius:50%;
-
-    border:
-        3px solid
-        rgba(100,235,255,.95);
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(20,60,105,.96),
-            rgba(5,15,35,.96)
-        );
-
-    color:white;
-
-    font-size:42px;
-
-    font-weight:bold;
-
-    box-shadow:
-        0 0 25px
-        rgba(0,210,255,.4),
-
-        inset 0 0 18px
-        rgba(0,220,255,.12);
-
-    backdrop-filter:blur(10px);
-
-    pointer-events:auto;
-
-    touch-action:manipulation;
-
-    transition:
-        transform .08s ease,
-        box-shadow .08s ease;
-}
-
-.touchButton:active{
-    transform:scale(.86);
-
-    box-shadow:
-        0 0 45px
-        rgba(0,230,255,.85);
-}
-
-
-/* =====================================================
+/* =========================
    CODE SCREEN
-===================================================== */
+========================= */
 
 #codeScreen{
     position:fixed;
-
     inset:0;
-
     z-index:1000;
-
     display:flex;
-
-    align-items:center;
     justify-content:center;
-
-    padding:20px;
-
+    align-items:center;
     background:
-        radial-gradient(
-            circle at 50% 30%,
-            #243f83,
-            #050917 65%,
-            #010207
-        );
-
-    backdrop-filter:blur(15px);
+        radial-gradient(circle at center,#18285d 0%,#080d24 45%,#02040d 100%);
 }
 
 #codeBox{
-    width:min(92%,430px);
-
-    padding:38px 28px;
-
+    width:min(500px,90%);
+    padding:35px 28px;
+    border-radius:25px;
     text-align:center;
-
-    border-radius:27px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(15,30,70,.98),
-            rgba(4,9,25,.98)
-        );
-
-    border:
-        1px solid
-        rgba(70,225,255,.9);
-
+    background:rgba(8,15,40,.94);
+    border:1px solid rgba(100,190,255,.5);
     box-shadow:
-        0 0 45px
-        rgba(0,210,255,.4);
+        0 0 35px rgba(0,170,255,.25),
+        inset 0 0 30px rgba(30,100,255,.08);
 }
 
 #codeTitle{
-    font-size:29px;
-
-    font-weight:bold;
-
-    color:#67eaff;
-
-    text-shadow:
-        0 0 15px
-        rgba(0,220,255,.7);
-
-    margin-bottom:12px;
+    font-size:34px;
+    font-weight:900;
+    color:white;
+    margin-bottom:15px;
+    text-shadow:0 0 20px #42bfff;
 }
 
 #codeText{
-    color:#b9cbe5;
-
-    font-size:15px;
-
-    line-height:1.5;
-
-    margin-bottom:23px;
+    color:#b9c9ee;
+    line-height:1.6;
+    font-size:16px;
+    margin-bottom:25px;
 }
 
 #codeInput{
     width:100%;
-
-    padding:17px;
-
-    border-radius:14px;
-
-    border:
-        1px solid
-        rgba(90,220,255,.6);
-
+    padding:16px;
+    border-radius:13px;
+    border:1px solid #397aff;
     outline:none;
-
-    background:
-        rgba(2,8,22,.95);
-
+    background:#050a1c;
     color:white;
-
     font-size:17px;
-
     text-align:center;
-
-    margin-bottom:13px;
 }
 
-#codeInput:focus{
-    border-color:#65eaff;
-
-    box-shadow:
-        0 0 20px
-        rgba(0,220,255,.25);
+#codeInput::placeholder{
+    color:#69789f;
 }
 
-#codeButton{
+.codeButton{
     width:100%;
-
-    padding:17px;
-
-    border:none;
-
-    border-radius:14px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #62efff,
-            #4c8dff
-        );
-
-    color:#031019;
-
-    font-size:17px;
-
-    font-weight:bold;
-
+    margin-top:12px;
+    padding:15px;
+    border:0;
+    border-radius:13px;
+    color:white;
+    font-size:16px;
+    font-weight:900;
     cursor:pointer;
+    background:linear-gradient(90deg,#2378ff,#7c3cff);
+    box-shadow:0 0 20px rgba(80,100,255,.3);
+}
 
-    box-shadow:
-        0 0 25px
-        rgba(0,220,255,.4);
+#skipButton{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.15);
+    box-shadow:none;
+}
+
+.codeButton:active{
+    transform:scale(.98);
 }
 
 #codeError{
-    min-height:22px;
-
+    min-height:24px;
     margin-top:12px;
-
-    color:#ff6688;
-
-    font-size:14px;
+    color:#ff657e;
+    font-weight:bold;
 }
 
+/* =========================
+   GAME
+========================= */
 
-/* =====================================================
-   START MENÜ
-===================================================== */
+#game{
+    position:relative;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:
+        linear-gradient(#070b20 0%,#101b3c 48%,#162343 100%);
+}
+
+/* STARS */
+
+.star{
+    position:absolute;
+    width:3px;
+    height:3px;
+    border-radius:50%;
+    background:white;
+    opacity:.8;
+}
+
+.s1{left:8%;top:12%}
+.s2{left:18%;top:23%}
+.s3{left:29%;top:9%}
+.s4{left:42%;top:18%}
+.s5{left:55%;top:7%}
+.s6{left:67%;top:22%}
+.s7{left:79%;top:11%}
+.s8{left:90%;top:27%}
+.s9{left:14%;top:37%}
+.s10{left:72%;top:35%}
+
+/* MOON */
+
+#moon{
+    position:absolute;
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    right:9%;
+    top:8%;
+    background:#e8f2ff;
+    box-shadow:0 0 45px rgba(180,220,255,.5);
+}
+
+/* CITY */
+
+#city{
+    position:absolute;
+    bottom:30%;
+    left:0;
+    width:100%;
+    height:27%;
+    display:flex;
+    align-items:flex-end;
+    gap:5px;
+    overflow:hidden;
+}
+
+.building{
+    flex:1;
+    min-width:40px;
+    background:linear-gradient(#111a39,#080d20);
+    border-top:1px solid rgba(90,150,255,.3);
+}
+
+.building:nth-child(1){height:50%}
+.building:nth-child(2){height:75%}
+.building:nth-child(3){height:43%}
+.building:nth-child(4){height:88%}
+.building:nth-child(5){height:58%}
+.building:nth-child(6){height:78%}
+.building:nth-child(7){height:45%}
+.building:nth-child(8){height:91%}
+.building:nth-child(9){height:61%}
+.building:nth-child(10){height:76%}
+.building:nth-child(11){height:49%}
+.building:nth-child(12){height:85%}
+
+/* ROAD */
+
+#road{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:0;
+    width:min(900px,92%);
+    height:72%;
+    background:
+        linear-gradient(90deg,
+            #080b16 0%,
+            #151a2c 50%,
+            #080b16 100%);
+    clip-path:polygon(31% 0,69% 0,100% 100%,0 100%);
+    border-top:2px solid rgba(120,190,255,.35);
+}
+
+/* LANE LINES */
+
+.laneLine{
+    position:absolute;
+    top:0;
+    width:5px;
+    height:100%;
+    background:repeating-linear-gradient(
+        to bottom,
+        rgba(120,190,255,.7) 0px,
+        rgba(120,190,255,.7) 45px,
+        transparent 45px,
+        transparent 85px
+    );
+    opacity:.55;
+}
+
+#line1{
+    left:33%;
+}
+
+#line2{
+    left:67%;
+}
+
+/* PLAYER */
+
+#player{
+    position:absolute;
+    left:50%;
+    bottom:14%;
+    width:52px;
+    height:95px;
+    transform:translateX(-50%);
+    transition:left .18s ease;
+    z-index:20;
+}
+
+.head{
+    position:absolute;
+    top:0;
+    left:13px;
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    background:#e8f3ff;
+    box-shadow:0 0 15px #55bfff;
+}
+
+.body{
+    position:absolute;
+    top:27px;
+    left:14px;
+    width:24px;
+    height:38px;
+    border-radius:9px;
+    background:linear-gradient(#43baff,#514cff);
+    box-shadow:0 0 18px rgba(50,150,255,.6);
+}
+
+.arm{
+    position:absolute;
+    top:30px;
+    width:9px;
+    height:34px;
+    border-radius:8px;
+    background:#6d86ff;
+}
+
+.arm.left{
+    left:4px;
+    transform:rotate(12deg);
+}
+
+.arm.right{
+    right:4px;
+    transform:rotate(-12deg);
+}
+
+.leg{
+    position:absolute;
+    top:61px;
+    width:10px;
+    height:34px;
+    border-radius:8px;
+    background:#3949a5;
+}
+
+.leg.left{
+    left:13px;
+    transform:rotate(4deg);
+}
+
+.leg.right{
+    right:13px;
+    transform:rotate(-4deg);
+}
+
+/* OBJECTS */
+
+.object{
+    position:absolute;
+    z-index:15;
+}
+
+.obstacle{
+    width:50px;
+    height:55px;
+    border-radius:9px;
+    background:
+        linear-gradient(135deg,#ff304f,#8f1635);
+    border:2px solid #ff7185;
+    box-shadow:
+        0 0 20px rgba(255,40,80,.55),
+        inset 0 0 12px rgba(255,255,255,.12);
+}
+
+.obstacle:before{
+    content:"";
+    position:absolute;
+    left:8px;
+    right:8px;
+    top:12px;
+    height:6px;
+    background:#ffb1bc;
+    box-shadow:0 14px #ffb1bc;
+    opacity:.7;
+}
+
+.coin{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    border:4px solid #ffe85a;
+    background:#ffb700;
+    box-shadow:
+        0 0 15px #ffd42a,
+        inset 0 0 8px #fff6a0;
+}
+
+/* HUD */
+
+#hud{
+    position:absolute;
+    top:15px;
+    left:15px;
+    right:15px;
+    z-index:50;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.hudBox{
+    min-width:100px;
+    padding:10px 14px;
+    border-radius:12px;
+    background:rgba(3,8,25,.65);
+    border:1px solid rgba(110,170,255,.25);
+    backdrop-filter:blur(8px);
+    color:white;
+    font-weight:bold;
+}
+
+.hudLabel{
+    font-size:11px;
+    color:#8297c5;
+    text-transform:uppercase;
+}
+
+.hudValue{
+    margin-top:3px;
+    font-size:19px;
+}
+
+/* TOUCH */
+
+#touch{
+    position:absolute;
+    z-index:100;
+    left:0;
+    right:0;
+    bottom:25px;
+    display:none;
+    justify-content:space-between;
+    padding:0 35px;
+    pointer-events:none;
+}
+
+.touchButton{
+    width:90px;
+    height:90px;
+    border-radius:22px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:36px;
+    font-weight:bold;
+    color:white;
+    background:rgba(30,60,140,.75);
+    border:2px solid rgba(120,190,255,.5);
+    box-shadow:0 0 20px rgba(50,130,255,.3);
+    pointer-events:auto;
+}
+
+.touchButton:active{
+    transform:scale(.93);
+    background:rgba(60,100,220,.9);
+}
+
+/* MENU */
 
 #menu{
     position:absolute;
-
     inset:0;
-
     z-index:200;
-
     display:flex;
-
-    align-items:center;
     justify-content:center;
-
-    padding:20px;
-
-    background:
-        rgba(1,4,13,.78);
-
-    backdrop-filter:blur(12px);
+    align-items:center;
+    background:rgba(2,5,18,.48);
+    backdrop-filter:blur(5px);
 }
 
 .menuBox{
-    width:min(92%,540px);
-
-    padding:42px 30px;
-
+    width:min(520px,90%);
+    padding:35px;
     text-align:center;
-
-    border-radius:30px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(15,28,65,.98),
-            rgba(5,10,25,.98)
-        );
-
-    border:
-        1px solid
-        rgba(70,225,255,.85);
-
-    box-shadow:
-        0 0 40px
-        rgba(0,210,255,.35);
+    border-radius:25px;
+    background:rgba(6,12,32,.9);
+    border:1px solid rgba(100,180,255,.35);
+    box-shadow:0 0 45px rgba(20,80,255,.2);
 }
 
 .subtitle{
-    font-size:15px;
+    color:#67c9ff;
+    font-size:14px;
+    font-weight:bold;
+    letter-spacing:4px;
+    margin-bottom:18px;
+}
 
-    letter-spacing:5px;
-
-    color:#8da8cb;
-
+.menuText{
+    color:#c7d5f5;
+    line-height:1.8;
     margin-bottom:25px;
 }
 
-.text{
-    color:#c9d7ee;
-
-    line-height:1.7;
-
-    margin-bottom:30px;
-
-    font-size:16px;
+#menuText{
+    color:#c7d5f5;
+    line-height:1.8;
+    margin-bottom:25px;
 }
 
 .startButton{
     width:100%;
-
-    padding:18px 30px;
-
-    border:none;
-
-    border-radius:16px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #62efff,
-            #4c8dff
-        );
-
-    color:#031019;
-
-    font-size:19px;
-
-    font-weight:bold;
-
+    padding:17px;
+    border:0;
+    border-radius:14px;
+    background:linear-gradient(90deg,#168bff,#713cff);
+    color:white;
+    font-size:17px;
+    font-weight:900;
     cursor:pointer;
-
-    box-shadow:
-        0 0 25px
-        rgba(0,220,255,.45);
+    box-shadow:0 0 25px rgba(50,100,255,.35);
 }
 
 .startButton:active{
-    transform:scale(.97);
+    transform:scale(.98);
 }
 
-.hidden{
-    display:none!important;
-}
-
-
-/* =====================================================
-   HANDY + TABLET
-===================================================== */
+/* RESPONSIVE */
 
 @media(max-width:1024px){
 
@@ -960,130 +493,93 @@ body{
     #road{
         width:95%;
     }
-
 }
-
-
-/* =====================================================
-   HANDY
-===================================================== */
 
 @media(max-width:600px){
 
-    #hud{
-        top:10px;
-        left:10px;
-        right:10px;
-
-        gap:6px;
+    #codeBox{
+        padding:27px 20px;
     }
 
-    .box{
-        min-width:0;
-
-        padding:8px 10px;
-
-        font-size:12px;
-
-        border-radius:11px;
-    }
-
-    .moon{
-        width:75px;
-        height:75px;
-    }
-
-    #touch{
-        bottom:15px;
-
-        padding-left:18px;
-        padding-right:18px;
+    #codeTitle{
+        font-size:28px;
     }
 
     .touchButton{
         width:76px;
         height:76px;
-
-        font-size:33px;
-
-        border-radius:22px;
+        font-size:30px;
+        border-radius:20px;
     }
 
-    .menuBox{
-        padding:32px 22px;
+    #touch{
+        padding:0 18px;
+        bottom:18px;
     }
 
-    .text{
-        font-size:14px;
+    .hudBox{
+        min-width:80px;
+        padding:8px 10px;
     }
 
+    .hudValue{
+        font-size:16px;
+    }
+
+    .moon{
+        transform:scale(.75);
+    }
 }
-
-
-/* =====================================================
-   KLEINES HANDY
-===================================================== */
 
 @media(max-width:380px){
 
     .touchButton{
         width:66px;
         height:66px;
-
-        font-size:28px;
+        font-size:25px;
     }
 
     #touch{
-        bottom:10px;
+        padding:0 12px;
     }
 
+    .hudBox{
+        min-width:70px;
+    }
 }
-
-
-/* =====================================================
-   TABLET
-===================================================== */
 
 @media(min-width:601px) and (max-width:1024px){
 
     #touch{
+        padding:0 45px;
         bottom:30px;
-
-        padding-left:45px;
-        padding-right:45px;
     }
 
     .touchButton{
         width:105px;
         height:105px;
-
-        font-size:46px;
+        font-size:42px;
     }
-
 }
-
 </style>
 </head>
 
-
 <body>
 
-
-<!-- =====================================================
-     CODE EINGABE
-===================================================== -->
+<!-- =========================
+     CODE SCREEN
+========================= -->
 
 <div id="codeScreen">
 
     <div id="codeBox">
 
-        <div id="codeTitle">
-            🔐 Zugang
-        </div>
+        <div id="codeTitle">🔐 Zugang</div>
 
         <div id="codeText">
-            Gib den Zugangscode ein,<br>
-            um das Spiel zu betreten.
+            Du kannst einen Zugangscode eingeben.<br>
+            Mit dem richtigen Code kannst du Hindernisse berühren,<br>
+            ohne eliminiert zu werden.
         </div>
 
         <input
@@ -1094,8 +590,12 @@ body{
             spellcheck="false"
         >
 
-        <button id="codeButton">
+        <button class="codeButton" id="codeButton">
             WEITER
+        </button>
+
+        <button class="codeButton" id="skipButton">
+            ÜBERSPRINGEN
         </button>
 
         <div id="codeError"></div>
@@ -1105,53 +605,52 @@ body{
 </div>
 
 
-<!-- =====================================================
+<!-- =========================
      GAME
-===================================================== -->
+========================= -->
 
 <div id="game">
 
+    <!-- STARS -->
+    <div class="star s1"></div>
+    <div class="star s2"></div>
+    <div class="star s3"></div>
+    <div class="star s4"></div>
+    <div class="star s5"></div>
+    <div class="star s6"></div>
+    <div class="star s7"></div>
+    <div class="star s8"></div>
+    <div class="star s9"></div>
+    <div class="star s10"></div>
 
-    <!-- HINTERGRUND -->
+    <div id="moon"></div>
 
-    <div class="stars"></div>
-
-    <div class="moon"></div>
-
-
-    <!-- STADT -->
-
-    <div class="city">
-
-        <div class="building b1"></div>
-        <div class="building b2"></div>
-        <div class="building b3"></div>
-        <div class="building b4"></div>
-
-        <div class="building b5"></div>
-        <div class="building b6"></div>
-        <div class="building b7"></div>
-        <div class="building b8"></div>
-
+    <!-- CITY -->
+    <div id="city">
+        <div class="building"></div>
+        <div class="building"></div>
+        <div class="building"></div>
+        <div class="building"></div>
+        <div class="building"></div>
+        <div class="building"></div>
+        <div class="building"></div>
+        <div class="building"></div>
+        <div class="building"></div>
+        <div class="building"></div>
+        <div class="building"></div>
+        <div class="building"></div>
     </div>
 
-
-    <!-- STRASSE -->
-
+    <!-- ROAD -->
     <div id="road">
-
-        <div class="lane lane1"></div>
-        <div class="lane lane2"></div>
-
+        <div class="laneLine" id="line1"></div>
+        <div class="laneLine" id="line2"></div>
     </div>
 
-
-    <!-- SPIELER -->
-
+    <!-- PLAYER -->
     <div id="player">
 
         <div class="head"></div>
-
         <div class="body"></div>
 
         <div class="arm left"></div>
@@ -1162,52 +661,41 @@ body{
 
     </div>
 
-
     <!-- HUD -->
-
     <div id="hud">
 
-        <div class="box">
-            🏆 <span id="score">0</span>
+        <div class="hudBox">
+            <div class="hudLabel">Punkte</div>
+            <div class="hudValue" id="score">0</div>
         </div>
 
-        <div class="box">
-            🪙 <span id="coins">0</span>
+        <div class="hudBox">
+            <div class="hudLabel">Münzen</div>
+            <div class="hudValue" id="coins">0</div>
         </div>
 
-        <div class="box">
-            ⚡ <span id="difficulty">1</span>
+        <div class="hudBox">
+            <div class="hudLabel">Level</div>
+            <div class="hudValue" id="difficulty">1</div>
         </div>
 
     </div>
 
-
-    <!-- STEUERUNG -->
-
+    <!-- TOUCH -->
     <div id="touch">
 
-        <div
-            class="touchButton"
-            id="left">
-
+        <div class="touchButton" id="left">
             ◀
-
         </div>
 
-
-        <div
-            class="touchButton"
-            id="right">
-
+        <div class="touchButton" id="right">
             ▶
-
         </div>
 
     </div>
 
 
-    <!-- START / GAME OVER -->
-
+    <!-- MENU -->
     <div id="menu">
 
         <div class="menuBox">
@@ -1216,24 +704,15 @@ body{
                 ENDLESS RUN
             </div>
 
-            <div
-                class="text"
-                id="menuText">
-
+            <div id="menuText">
                 🏃 Laufe so weit du kannst!<br>
                 🪙 Sammle Münzen!<br>
                 🚧 Weiche Hindernissen aus!<br>
                 ⚡ Die Geschwindigkeit steigt!
-
             </div>
 
-
-            <button
-                class="startButton"
-                id="start">
-
+            <button class="startButton" id="start">
                 SPIEL STARTEN
-
             </button>
 
         </div>
@@ -1245,73 +724,94 @@ body{
 
 <script>
 
-/* =====================================================
-   ELEMENTE
-===================================================== */
-
-const game =
-    document.getElementById("game");
-
-const player =
-    document.getElementById("player");
-
-const scoreText =
-    document.getElementById("score");
-
-const coinText =
-    document.getElementById("coins");
-
-const difficultyText =
-    document.getElementById("difficulty");
-
-const menu =
-    document.getElementById("menu");
-
-const menuText =
-    document.getElementById("menuText");
-
-const startButton =
-    document.getElementById("start");
-
-
-/* =====================================================
+/* =========================
    CODE SYSTEM
-===================================================== */
+========================= */
 
-const codeScreen =
-    document.getElementById("codeScreen");
-
-const codeInput =
-    document.getElementById("codeInput");
-
-const codeButton =
-    document.getElementById("codeButton");
-
-const codeError =
-    document.getElementById("codeError");
-
-
-const SECRET_CODE =
-    "WelcomeT13";
-
+const SECRET_CODE = "WelcomeT13";
 
 let codeUnlocked = false;
+let gameStartedNormally = false;
+
+const codeScreen = document.getElementById("codeScreen");
+const codeInput = document.getElementById("codeInput");
+const codeButton = document.getElementById("codeButton");
+const skipButton = document.getElementById("skipButton");
+const codeError = document.getElementById("codeError");
+
+function checkCode(){
+
+    const enteredCode = codeInput.value.trim();
+
+    if(enteredCode === SECRET_CODE){
+
+        codeUnlocked = true;
+        gameStartedNormally = false;
+
+        codeScreen.style.display = "none";
+        codeError.textContent = "";
+        codeInput.value = "";
+
+    }else{
+
+        codeError.textContent = "❌ Falscher Code";
+        codeInput.value = "";
+        codeInput.focus();
+
+    }
+
+}
 
 
-/* =====================================================
-   GAME VARIABLEN
-===================================================== */
+/* =========================
+   SKIP CODE
+========================= */
+
+skipButton.addEventListener("click",function(){
+
+    codeUnlocked = false;
+    gameStartedNormally = true;
+
+    codeScreen.style.display = "none";
+    codeError.textContent = "";
+
+});
+
+
+codeButton.addEventListener("click",checkCode);
+
+codeInput.addEventListener("keydown",function(event){
+
+    if(event.key === "Enter"){
+        checkCode();
+    }
+
+});
+
+
+/* =========================
+   GAME VARIABLES
+========================= */
+
+const player = document.getElementById("player");
+
+const scoreDisplay = document.getElementById("score");
+const coinsDisplay = document.getElementById("coins");
+const difficultyDisplay = document.getElementById("difficulty");
+
+const menu = document.getElementById("menu");
+const menuText = document.getElementById("menuText");
+
+const startButton = document.getElementById("start");
 
 let running = false;
 
 let lane = 1;
 
 let score = 0;
-
 let coins = 0;
 
 let speed = 5;
-
 let difficulty = 1;
 
 let spawnTimer = 0;
@@ -1321,382 +821,188 @@ let objects = [];
 let lastTime = 0;
 
 let highscore =
-    Number(
-        localStorage.getItem(
-            "tweb11Highscore"
-        ) || 0
-    );
+    Number(localStorage.getItem("runnerHighscore") || 0);
 
 
-const lanes = [
-    35,
-    50,
-    65
-];
+/* =========================
+   LANES
+========================= */
 
-
-/* =====================================================
-   CODE PRÜFEN
-===================================================== */
-
-function checkCode(){
-
-    const enteredCode =
-        codeInput.value.trim();
-
-
-    if(
-        enteredCode === SECRET_CODE
-    ){
-
-        codeUnlocked = true;
-
-        codeScreen.style.display =
-            "none";
-
-        codeError.textContent = "";
-
-        codeInput.value = "";
-
-    }else{
-
-        codeError.textContent =
-            "❌ Falscher Code";
-
-        codeInput.value = "";
-
-        codeInput.focus();
-
-    }
-
-}
-
-
-codeButton.addEventListener(
-    "click",
-    checkCode
-);
-
-
-codeInput.addEventListener(
-    "keydown",
-    function(e){
-
-        if(e.key === "Enter"){
-
-            checkCode();
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   SPIELER POSITION
-===================================================== */
+const lanes = [35,50,65];
 
 function updatePlayer(){
 
-    player.style.left =
-        lanes[lane] + "%";
+    player.style.left = lanes[lane] + "%";
 
 }
 
 
-/* =====================================================
-   SPIEL STARTEN
-===================================================== */
+/* =========================
+   START GAME
+========================= */
 
 function startGame(){
-
-    objects.forEach(
-        object => object.el.remove()
-    );
-
-    objects = [];
 
     running = true;
 
     lane = 1;
 
     score = 0;
-
     coins = 0;
 
     speed = 5;
-
     difficulty = 1;
 
-    spawnTimer = 20;
+    spawnTimer = 0;
 
-    scoreText.textContent =
-        "0";
+    lastTime = performance.now();
 
-    coinText.textContent =
-        "0";
+    objects.forEach(obj => obj.element.remove());
 
-    difficultyText.textContent =
-        "1";
+    objects = [];
+
+    scoreDisplay.textContent = "0";
+    coinsDisplay.textContent = "0";
+    difficultyDisplay.textContent = "1";
+
+    menu.style.display = "none";
 
     updatePlayer();
 
-    menu.classList.add(
-        "hidden"
-    );
-
-    lastTime =
-        performance.now();
-
-    requestAnimationFrame(
-        gameLoop
-    );
+    requestAnimationFrame(gameLoop);
 
 }
 
 
-/* =====================================================
-   GAME LOOP
-===================================================== */
-
-function gameLoop(time){
-
-    if(!running)
-        return;
-
-
-    const delta =
-        Math.min(
-            (time-lastTime)/16.67,
-            3
-        );
-
-
-    lastTime = time;
-
-
-    score +=
-        0.08 *
-        speed *
-        delta;
-
-
-    /* SCHWIERIGKEIT */
-
-    const newDifficulty =
-        Math.floor(
-            score / 250
-        ) + 1;
-
-
-    if(
-        newDifficulty !==
-        difficulty
-    ){
-
-        difficulty =
-            newDifficulty;
-
-        difficultyText.textContent =
-            difficulty;
-
-    }
-
-
-    /* GESCHWINDIGKEIT */
-
-    speed =
-        5 +
-        (difficulty-1)*0.8;
-
-
-    /* OBJEKTE */
-
-    spawnTimer -= delta;
-
-
-    if(
-        spawnTimer <= 0
-    ){
-
-        spawnObject();
-
-
-        const minimum =
-            Math.max(
-                20,
-                34-difficulty
-            );
-
-
-        const maximum =
-            Math.max(
-                minimum,
-                70-difficulty*4
-            );
-
-
-        spawnTimer =
-            minimum +
-            Math.random() *
-            (maximum-minimum);
-
-    }
-
-
-    moveObjects(delta);
-
-
-    scoreText.textContent =
-        Math.floor(score);
-
-
-    requestAnimationFrame(
-        gameLoop
-    );
-
-}
-
-
-/* =====================================================
-   OBJEKT ERSTELLEN
-===================================================== */
+/* =========================
+   SPAWN OBJECT
+========================= */
 
 function spawnObject(){
 
-    const obstacleChance =
-        Math.min(
-            .82,
-            .55 +
-            difficulty*.025
-        );
+    const element = document.createElement("div");
 
-
-    const isCoin =
-        Math.random() >
-        obstacleChance;
-
-
-    const element =
-        document.createElement(
-            "div"
-        );
-
-
-    element.className =
-        isCoin
-        ? "coin"
-        : "obstacle";
-
+    const isObstacle =
+        Math.random() <
+        Math.min(.82,.55 + difficulty * .025);
 
     const randomLane =
-        Math.floor(
-            Math.random()*3
-        );
+        Math.floor(Math.random() * 3);
 
+    element.classList.add("object");
+
+    if(isObstacle){
+        element.classList.add("obstacle");
+    }else{
+        element.classList.add("coin");
+    }
 
     element.style.left =
         lanes[randomLane] + "%";
 
+    element.style.top = "-80px";
 
-    element.style.transform =
-        "translateX(-50%)";
-
-
-    element.style.top =
-        "-90px";
-
-
-    game.appendChild(
-        element
-    );
-
+    document.getElementById("game").appendChild(element);
 
     objects.push({
 
-        el:element,
-
-        y:-90,
+        element:element,
 
         lane:randomLane,
 
-        coin:isCoin
+        type:isObstacle ? "obstacle" : "coin",
+
+        y:-80
 
     });
 
 }
 
 
-/* =====================================================
-   OBJEKTE BEWEGEN
-===================================================== */
+/* =========================
+   COLLISION
+========================= */
+
+function checkCollision(element){
+
+    const playerRect =
+        player.getBoundingClientRect();
+
+    const objectRect =
+        element.getBoundingClientRect();
+
+    return !(
+        playerRect.right < objectRect.left ||
+        playerRect.left > objectRect.right ||
+        playerRect.bottom < objectRect.top ||
+        playerRect.top > objectRect.bottom
+    );
+
+}
+
+
+/* =========================
+   MOVE OBJECTS
+========================= */
 
 function moveObjects(delta){
 
-    for(
-        let i=objects.length-1;
-        i>=0;
-        i--
-    ){
+    for(let i=objects.length-1;i>=0;i--){
 
-        const object =
-            objects[i];
+        const obj = objects[i];
 
+        obj.y += speed * delta * .08;
 
-        object.y +=
-            speed * delta;
+        obj.element.style.top =
+            obj.y + "px";
 
 
-        object.el.style.top =
-            object.y + "px";
-
+        /* COIN */
 
         if(
-            checkCollision(object)
+            obj.type === "coin" &&
+            obj.lane === lane &&
+            checkCollision(obj.element)
         ){
 
-            /* MÜNZE */
+            coins++;
 
-            if(
-                object.coin
-            ){
+            score += 50;
 
-                coins++;
+            obj.element.remove();
 
-                score += 50;
+            objects.splice(i,1);
 
-                coinText.textContent =
-                    coins;
+            continue;
 
-                object.el.remove();
-
-                objects.splice(
-                    i,
-                    1
-                );
-
-                continue;
-
-            }
+        }
 
 
-            /* SCHUTZMODUS */
+        /* OBSTACLE */
 
-            if(
-                codeUnlocked
-            ){
+        if(
+            obj.type === "obstacle" &&
+            obj.lane === lane &&
+            checkCollision(obj.element)
+        ){
 
-                /*
-                    Mit dem richtigen Code
-                    bleibt das Spiel weiter aktiv.
-                */
+            /*
+              MIT CODE:
+              Hindernisse werden berührt,
+              aber der Spieler bleibt am Leben.
+            */
+
+            if(codeUnlocked){
 
                 continue;
 
             }
 
 
-            /* NORMALES GAME OVER */
+            /*
+              OHNE CODE:
+              normales Spiel.
+            */
 
             gameOver();
 
@@ -1705,17 +1011,13 @@ function moveObjects(delta){
         }
 
 
-        if(
-            object.y >
-            window.innerHeight + 100
-        ){
+        /* REMOVE */
 
-            object.el.remove();
+        if(obj.y > window.innerHeight + 100){
 
-            objects.splice(
-                i,
-                1
-            );
+            obj.element.remove();
+
+            objects.splice(i,1);
 
         }
 
@@ -1724,78 +1026,91 @@ function moveObjects(delta){
 }
 
 
-/* =====================================================
-   KOLLISION
-===================================================== */
+/* =========================
+   GAME LOOP
+========================= */
 
-function checkCollision(object){
+function gameLoop(timestamp){
 
-    if(
-        object.lane !== lane
-    )
-        return false;
+    if(!running){
+        return;
+    }
 
+    const delta =
+        Math.min(40,timestamp-lastTime);
 
-    const p =
-        player.getBoundingClientRect();
-
-
-    const o =
-        object.el.getBoundingClientRect();
+    lastTime = timestamp;
 
 
-    const padding = 9;
+    /* SCORE */
+
+    score += .08 * speed * delta;
 
 
-    return(
+    /* DIFFICULTY */
 
-        p.left + padding <
-        o.right - padding
+    difficulty =
+        Math.floor(score / 250) + 1;
 
-        &&
+    speed =
+        5 + (difficulty - 1) * .8;
 
-        p.right - padding >
-        o.left + padding
 
-        &&
+    /* SPAWN */
 
-        p.top + padding <
-        o.bottom - padding
+    spawnTimer += delta;
 
-        &&
+    const spawnInterval =
+        Math.max(
+            430,
+            950 - difficulty * 35
+        );
 
-        p.bottom - padding >
-        o.top + padding
+    if(spawnTimer >= spawnInterval){
 
-    );
+        spawnObject();
+
+        spawnTimer = 0;
+
+    }
+
+
+    /* OBJECTS */
+
+    moveObjects(delta);
+
+
+    /* HUD */
+
+    scoreDisplay.textContent =
+        Math.floor(score);
+
+    coinsDisplay.textContent =
+        coins;
+
+    difficultyDisplay.textContent =
+        difficulty;
+
+
+    requestAnimationFrame(gameLoop);
 
 }
 
 
-/* =====================================================
+/* =========================
    GAME OVER
-===================================================== */
+========================= */
 
 function gameOver(){
 
     running = false;
 
+    if(score > highscore){
 
-    const finalScore =
-        Math.floor(score);
-
-
-    if(
-        finalScore >
-        highscore
-    ){
-
-        highscore =
-            finalScore;
-
+        highscore = Math.floor(score);
 
         localStorage.setItem(
-            "tweb11Highscore",
+            "runnerHighscore",
             highscore
         );
 
@@ -1803,46 +1118,38 @@ function gameOver(){
 
 
     menuText.innerHTML =
+        "💥 Runde beendet!<br><br>" +
 
-        "💥 <b>GAME OVER</b> 💥<br><br>" +
+        "🏆 Punkte: " +
+        Math.floor(score) +
 
-        "🏆 Score: <b>" +
-        finalScore +
-        "</b><br>" +
-
-        "🪙 Münzen: <b>" +
+        "<br>🪙 Münzen: " +
         coins +
-        "</b><br>" +
 
-        "🏅 Highscore: <b>" +
+        "<br>⭐ Highscore: " +
         highscore +
-        "</b><br><br>" +
 
-        "⚡ Schwierigkeit: <b>" +
-        difficulty +
-        "</b>";
+        "<br>⚡ Level: " +
+        difficulty;
 
 
     startButton.textContent =
         "NOCHMAL SPIELEN";
 
-
-    menu.classList.remove(
-        "hidden"
-    );
+    menu.style.display = "flex";
 
 }
 
 
-/* =====================================================
-   LINKS
-===================================================== */
+/* =========================
+   MOVEMENT
+========================= */
 
 function moveLeft(){
 
-    if(!running)
+    if(!running){
         return;
-
+    }
 
     if(lane > 0){
 
@@ -1855,15 +1162,11 @@ function moveLeft(){
 }
 
 
-/* =====================================================
-   RECHTS
-===================================================== */
-
 function moveRight(){
 
-    if(!running)
+    if(!running){
         return;
-
+    }
 
     if(lane < 2){
 
@@ -1876,48 +1179,44 @@ function moveRight(){
 }
 
 
-/* =====================================================
-   PC STEUERUNG
-===================================================== */
+/* =========================
+   KEYBOARD
+========================= */
 
-document.addEventListener(
-    "keydown",
-    function(e){
+document.addEventListener("keydown",function(event){
 
-        if(
-            e.key === "ArrowLeft" ||
-            e.key.toLowerCase() === "a"
-        ){
+    if(
+        event.key === "ArrowLeft" ||
+        event.key.toLowerCase() === "a"
+    ){
 
-            moveLeft();
-
-        }
-
-
-        if(
-            e.key === "ArrowRight" ||
-            e.key.toLowerCase() === "d"
-        ){
-
-            moveRight();
-
-        }
+        moveLeft();
 
     }
-);
 
 
-/* =====================================================
-   TOUCH LINKS
-===================================================== */
+    if(
+        event.key === "ArrowRight" ||
+        event.key.toLowerCase() === "d"
+    ){
 
-document
-    .getElementById("left")
+        moveRight();
+
+    }
+
+});
+
+
+/* =========================
+   TOUCH CONTROLS
+========================= */
+
+document.getElementById("left")
     .addEventListener(
         "pointerdown",
-        function(e){
+        function(event){
 
-            e.preventDefault();
+            event.preventDefault();
 
             moveLeft();
 
@@ -1925,17 +1224,12 @@ document
     );
 
 
-/* =====================================================
-   TOUCH RECHTS
-===================================================== */
-
-document
-    .getElementById("right")
+document.getElementById("right")
     .addEventListener(
         "pointerdown",
-        function(e){
+        function(event){
 
-            e.preventDefault();
+            event.preventDefault();
 
             moveRight();
 
@@ -1943,9 +1237,9 @@ document
     );
 
 
-/* =====================================================
+/* =========================
    START BUTTON
-===================================================== */
+========================= */
 
 startButton.addEventListener(
     "click",
@@ -1953,9 +1247,9 @@ startButton.addEventListener(
 );
 
 
-/* =====================================================
-   STARTPOSITION
-===================================================== */
+/* =========================
+   INITIAL POSITION
+========================= */
 
 updatePlayer();
 
