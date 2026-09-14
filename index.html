@@ -577,7 +577,6 @@ html,body{
 
 /* =========================
    TOUCH BUTTONS
-   EXTRA SICHTBAR
 ========================= */
 
 #touch{
@@ -1045,9 +1044,7 @@ html,body{
     </div>
 
 
-    <!-- =========================
-         TOUCH BUTTONS
-    ========================= -->
+    <!-- TOUCH BUTTONS -->
 
     <div id="touch">
 
@@ -1116,90 +1113,254 @@ html,body{
 ========================= */
 
 const SUPABASE_URL = "https://gojdovvvanvebznhqtfs.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_1i9OJO4LY6_dILkcEbhCow_f64XK92v";
-const SUPABASE_FUNCTION_URL = SUPABASE_URL + "/functions/v1/HyperRun";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_1i9OJO4LY6_dILkcEbhCow_f64XK92v";
+
+const SUPABASE_FUNCTION_URL =
+    SUPABASE_URL + "/functions/v1/HyperRun";
+
 
 let codeUnlocked = false;
+
 let hyperRunSessionId = null;
 
-async function hyperRunRequest(action, payload = {}){
-    const response = await fetch(SUPABASE_FUNCTION_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "apikey": SUPABASE_PUBLISHABLE_KEY
-        },
-        body: JSON.stringify({ action, ...payload })
-    });
+
+async function hyperRunRequest(
+    action,
+    payload = {}
+){
+
+    const response =
+        await fetch(
+            SUPABASE_FUNCTION_URL,
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                        "application/json",
+
+                    "apikey":
+                        SUPABASE_PUBLISHABLE_KEY
+                },
+
+                body:
+                    JSON.stringify({
+                        action,
+                        ...payload
+                    })
+            }
+        );
+
 
     let data = {};
-    try { data = await response.json(); } catch(e) {}
 
-    if(!response.ok || data.success === false){
-        throw new Error(data.error || "Serverfehler");
+    try{
+
+        data =
+            await response.json();
+
+    }catch(e){}
+
+
+    if(
+        !response.ok ||
+        data.success === false
+    ){
+
+        throw new Error(
+            data.error ||
+            "Serverfehler"
+        );
+
     }
+
 
     return data;
+
 }
 
-const codeScreen = document.getElementById("codeScreen");
-const codeInput = document.getElementById("codeInput");
-const codeButton = document.getElementById("codeButton");
-const skipButton = document.getElementById("skipButton");
-const codeError = document.getElementById("codeError");
+
+/* =========================
+   CODE
+========================= */
+
+const codeScreen =
+    document.getElementById(
+        "codeScreen"
+    );
+
+const codeInput =
+    document.getElementById(
+        "codeInput"
+    );
+
+const codeButton =
+    document.getElementById(
+        "codeButton"
+    );
+
+const skipButton =
+    document.getElementById(
+        "skipButton"
+    );
+
+const codeError =
+    document.getElementById(
+        "codeError"
+    );
+
 
 async function checkCode(){
-    const enteredCode = codeInput.value.trim();
+
+    const enteredCode =
+        codeInput.value.trim();
+
 
     if(!enteredCode){
-        codeError.textContent = "❌ Bitte Code eingeben";
+
+        codeError.textContent =
+            "❌ Bitte Code eingeben";
+
         return;
+
     }
 
-    codeButton.disabled = true;
-    codeError.textContent = "⏳ Prüfe Code...";
+
+    codeButton.disabled =
+        true;
+
+    codeError.textContent =
+        "⏳ Prüfe Code...";
+
 
     try{
-        const result = await hyperRunRequest("verify_code", { code: enteredCode });
+
+        const result =
+            await hyperRunRequest(
+                "verify_code",
+                {
+                    code:
+                        enteredCode
+                }
+            );
+
 
         if(result.unlocked){
-            codeUnlocked = true;
-            codeScreen.style.display = "none";
-            codeError.textContent = "";
-            codeInput.value = "";
-        }else{
-            codeError.textContent = "❌ Falscher Code";
-            codeInput.value = "";
-            codeInput.focus();
+
+            codeUnlocked =
+                true;
+
+            codeScreen.style.display =
+                "none";
+
+            codeError.textContent =
+                "";
+
+            codeInput.value =
+                "";
+
         }
+
+        else{
+
+            codeError.textContent =
+                "❌ Falscher Code";
+
+            codeInput.value =
+                "";
+
+            codeInput.focus();
+
+        }
+
     }catch(error){
-        codeError.textContent = "⚠️ Server nicht erreichbar";
+
+        codeError.textContent =
+            "⚠️ Server nicht erreichbar";
+
         console.error(error);
+
     }finally{
-        codeButton.disabled = false;
+
+        codeButton.disabled =
+            false;
+
     }
+
 }
 
-skipButton.addEventListener("click", function(){
-    codeUnlocked = false;
-    codeScreen.style.display = "none";
-});
 
-codeButton.addEventListener("click", checkCode);
+skipButton.addEventListener(
+    "click",
+    function(){
 
-codeInput.addEventListener("keydown", function(event){
-    if(event.key === "Enter") checkCode();
-});
+        codeUnlocked =
+            false;
+
+        codeScreen.style.display =
+            "none";
+
+    }
+);
+
+
+codeButton.addEventListener(
+    "click",
+    checkCode
+);
+
+
+codeInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key ===
+            "Enter"
+        ){
+
+            checkCode();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   HIGHSCORE
+========================= */
 
 async function loadServerHighscore(){
+
     try{
-        const result = await hyperRunRequest("get_highscore");
-        highscore = Number(result.highscore) || 0;
+
+        const result =
+            await hyperRunRequest(
+                "get_highscore"
+            );
+
+        highscore =
+            Number(
+                result.highscore
+            ) || 0;
+
     }catch(error){
-        console.error("Highscore konnte nicht geladen werden:", error);
-        highscore = 0;
+
+        console.error(
+            "Highscore konnte nicht geladen werden:",
+            error
+        );
+
+        highscore =
+            0;
+
     }
+
 }
+
 
 /* =========================
    GAME VARIABLES
@@ -1241,29 +1402,39 @@ const startButton =
     );
 
 
-let running = false;
+let running =
+    false;
 
-let lane = 1;
+let lane =
+    1;
 
-let score = 0;
+let score =
+    0;
 
-let coins = 0;
+let coins =
+    0;
 
 
 /* LANGSAMER START */
 
-let speed = 4.5;
+let speed =
+    4.5;
 
-let difficulty = 1;
+let difficulty =
+    1;
 
-let spawnTimer = 0;
+let spawnTimer =
+    0;
 
-let objects = [];
+let objects =
+    [];
 
-let lastTime = 0;
+let lastTime =
+    0;
 
 
-let highscore = 0;
+let highscore =
+    0;
 
 
 /* =========================
@@ -1291,34 +1462,65 @@ function updatePlayer(){
 
 async function startGame(){
 
-    if(running) return;
+    if(running)
+        return;
 
-    startButton.disabled = true;
+
+    startButton.disabled =
+        true;
+
 
     try{
-        const result = await hyperRunRequest("start");
-        hyperRunSessionId = result.sessionId;
+
+        const result =
+            await hyperRunRequest(
+                "start"
+            );
+
+        hyperRunSessionId =
+            result.sessionId;
+
     }catch(error){
+
         console.error(error);
-        menuText.innerHTML = "⚠️ Server nicht erreichbar.<br><br>Bitte kurz warten und erneut versuchen.";
-        startButton.disabled = false;
+
+        menuText.innerHTML =
+            "⚠️ Server nicht erreichbar.<br><br>" +
+            "Bitte kurz warten und erneut versuchen.";
+
+        startButton.disabled =
+            false;
+
         return;
+
     }
 
-    startButton.disabled = false;
-    running = true;
 
-    lane = 1;
+    startButton.disabled =
+        false;
 
-    score = 0;
 
-    coins = 0;
+    running =
+        true;
 
-    speed = 4.5;
 
-    difficulty = 1;
+    lane =
+        1;
 
-    spawnTimer = 0;
+    score =
+        0;
+
+    coins =
+        0;
+
+    speed =
+        4.5;
+
+    difficulty =
+        1;
+
+    spawnTimer =
+        0;
 
     lastTime =
         performance.now();
@@ -1333,7 +1535,8 @@ async function startGame(){
     );
 
 
-    objects = [];
+    objects =
+        [];
 
 
     scoreDisplay.textContent =
@@ -1422,7 +1625,9 @@ function spawnObject(){
 
 
     document
-        .getElementById("game")
+        .getElementById(
+            "game"
+        )
         .appendChild(
             element
         );
@@ -1430,16 +1635,19 @@ function spawnObject(){
 
     objects.push({
 
-        element:element,
+        element:
+            element,
 
-        lane:randomLane,
+        lane:
+            randomLane,
 
         type:
             isObstacle
             ? "obstacle"
             : "coin",
 
-        y:-80
+        y:
+            -80
 
     });
 
@@ -1509,7 +1717,9 @@ function moveObjects(
             obj.y + "px";
 
 
-        /* COIN */
+        /* =====================
+           COIN
+        ===================== */
 
         if(
             obj.type === "coin" &&
@@ -1519,24 +1729,37 @@ function moveObjects(
             )
         ){
 
-            coins++;
+            /*
+              WICHTIG:
+              Die Münze gibt hier
+              NOCH KEINE Punkte.
 
-            score += 50;
+              Wir zählen nur die Münze.
+              Der +1000 Bonus wird
+              erst bei Game Over
+              berechnet.
+            */
+
+            coins++;
 
 
             obj.element.remove();
+
 
             objects.splice(
                 i,
                 1
             );
 
+
             continue;
 
         }
 
 
-        /* HINDERNIS */
+        /* =====================
+           HINDERNIS
+        ===================== */
 
         if(
             obj.type === "obstacle" &&
@@ -1570,7 +1793,9 @@ function moveObjects(
         }
 
 
-        /* ENTFERNEN */
+        /* =====================
+           ENTFERNEN
+        ===================== */
 
         if(
             obj.y >
@@ -1578,6 +1803,7 @@ function moveObjects(
         ){
 
             obj.element.remove();
+
 
             objects.splice(
                 i,
@@ -1609,7 +1835,8 @@ function gameLoop(
     const delta =
         Math.min(
             40,
-            timestamp - lastTime
+            timestamp -
+            lastTime
         );
 
 
@@ -1618,7 +1845,8 @@ function gameLoop(
 
 
     /*
-      Langsamer Punktaufbau
+      NORMALE PUNKTE
+      laufen ganz normal weiter.
     */
 
     score +=
@@ -1628,8 +1856,8 @@ function gameLoop(
 
 
     /*
-      Neues Level erst
-      alle 500 Punkte
+      Level weiterhin
+      alle 500 normale Punkte.
     */
 
     difficulty =
@@ -1640,7 +1868,7 @@ function gameLoop(
 
     /*
       Geschwindigkeit
-      steigt sehr langsam
+      steigt sehr langsam.
     */
 
     speed =
@@ -1653,10 +1881,11 @@ function gameLoop(
 
     /*
       Hindernisse kommen
-      nur langsam häufiger
+      langsam häufiger.
     */
 
-    spawnTimer += delta;
+    spawnTimer +=
+        delta;
 
 
     const spawnInterval =
@@ -1674,7 +1903,8 @@ function gameLoop(
 
         spawnObject();
 
-        spawnTimer = 0;
+        spawnTimer =
+            0;
 
     }
 
@@ -1683,6 +1913,15 @@ function gameLoop(
         delta
     );
 
+
+    /*
+      Während des Spiels
+      werden NUR die normalen
+      Punkte angezeigt.
+
+      Der Münzbonus kommt
+      erst bei Game Over.
+    */
 
     scoreDisplay.textContent =
         Math.floor(score);
@@ -1709,45 +1948,153 @@ function gameLoop(
 
 async function gameOver(){
 
-    if(!running) return;
-    running = false;
+    if(!running)
+        return;
 
-    const finalScore = Math.floor(score);
-    const finalCoins = Math.floor(coins);
-    const finalLevel = Math.floor(finalScore / 500) + 1;
 
-    let serverScore = finalScore;
-    let serverCoins = finalCoins;
-    let serverLevel = finalLevel;
+    running =
+        false;
+
+
+    /*
+      NORMALE PUNKTE
+    */
+
+    const normalScore =
+        Math.floor(score);
+
+
+    /*
+      MÜNZ-BONUS
+      Jede Münze = 1000 Punkte
+    */
+
+    const coinBonus =
+        Math.floor(coins) *
+        1000;
+
+
+    /*
+      ENDGÜLTIGE PUNKTE
+    */
+
+    const finalScore =
+        normalScore +
+        coinBonus;
+
+
+    const finalCoins =
+        Math.floor(coins);
+
+
+    const finalLevel =
+        Math.floor(
+            finalScore / 500
+        ) + 1;
+
+
+    let serverScore =
+        finalScore;
+
+    let serverCoins =
+        finalCoins;
+
+    let serverLevel =
+        finalLevel;
+
+
+    /*
+      ERGEBNIS AN SUPABASE SENDEN
+    */
 
     if(hyperRunSessionId){
-        try{
-            const result = await hyperRunRequest("finish", {
-                sessionId: hyperRunSessionId,
-                score: finalScore,
-                coins: finalCoins
-            });
 
-            serverScore = Number(result.score) || 0;
-            serverCoins = Number(result.coins) || 0;
-            serverLevel = Number(result.level) || 1;
-            highscore = Math.max(highscore, serverScore);
+        try{
+
+            const result =
+                await hyperRunRequest(
+                    "finish",
+                    {
+                        sessionId:
+                            hyperRunSessionId,
+
+                        score:
+                            finalScore,
+
+                        coins:
+                            finalCoins
+                    }
+                );
+
+
+            serverScore =
+                Number(
+                    result.score
+                ) || finalScore;
+
+
+            serverCoins =
+                Number(
+                    result.coins
+                ) || finalCoins;
+
+
+            serverLevel =
+                Number(
+                    result.level
+                ) || finalLevel;
+
+
+            highscore =
+                Math.max(
+                    highscore,
+                    serverScore
+                );
+
+
         }catch(error){
-            console.error("Runde konnte nicht gespeichert werden:", error);
+
+            console.error(
+                "Runde konnte nicht gespeichert werden:",
+                error
+            );
+
         }
 
-        hyperRunSessionId = null;
+
+        hyperRunSessionId =
+            null;
+
     }
+
+
+    /*
+      ENDERGEBNIS
+    */
 
     menuText.innerHTML =
         "💥 Runde beendet!<br><br>" +
-        "🏆 Punkte: " + serverScore +
-        "<br>🪙 Münzen: " + serverCoins +
-        "<br>⭐ Highscore: " + highscore +
-        "<br>⚡ Level: " + serverLevel;
 
-    startButton.textContent = "NOCHMAL SPIELEN";
-    menu.style.display = "flex";
+        "🏆 Punkte: " +
+        serverScore +
+
+        "<br>🪙 Münzen: " +
+        serverCoins +
+
+        "<br>⭐ Highscore: " +
+        highscore +
+
+        "<br>⚡ Level: " +
+        serverLevel;
+
+
+    startButton.textContent =
+        "NOCHMAL SPIELEN";
+
+
+    menu.style.display =
+        "flex";
+
 }
 
 
@@ -1841,7 +2188,9 @@ document.addEventListener(
 ========================= */
 
 document
-    .getElementById("left")
+    .getElementById(
+        "left"
+    )
     .addEventListener(
         "pointerdown",
         function(event){
@@ -1859,7 +2208,9 @@ document
 ========================= */
 
 document
-    .getElementById("right")
+    .getElementById(
+        "right"
+    )
     .addEventListener(
         "pointerdown",
         function(event){
@@ -1887,6 +2238,7 @@ startButton.addEventListener(
 ========================= */
 
 updatePlayer();
+
 loadServerHighscore();
 
 </script>
