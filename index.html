@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
 <title>Endless Runner</title>
 
 <style>
-
 *{
     box-sizing:border-box;
     margin:0;
@@ -25,43 +23,24 @@ html,body{
     touch-action:none;
 }
 
-
-/* =========================
-   CODE SCREEN
-========================= */
-
 #codeScreen{
     position:fixed;
     inset:0;
     z-index:1000;
-
     display:flex;
     justify-content:center;
     align-items:center;
-
-    background:
-        radial-gradient(
-            circle at center,
-            #18285d 0%,
-            #080d24 45%,
-            #02040d 100%
-        );
+    background:radial-gradient(circle at center,#18285d 0%,#080d24 45%,#02040d 100%);
 }
 
 #codeBox{
     width:min(500px,90%);
     padding:35px 28px;
-
     border-radius:25px;
     text-align:center;
-
     background:rgba(8,15,40,.94);
-
     border:1px solid rgba(100,190,255,.5);
-
-    box-shadow:
-        0 0 35px rgba(0,170,255,.25),
-        inset 0 0 30px rgba(30,100,255,.08);
+    box-shadow:0 0 35px rgba(0,170,255,.25),inset 0 0 30px rgba(30,100,255,.08);
 }
 
 #codeTitle{
@@ -69,7 +48,6 @@ html,body{
     font-weight:900;
     color:white;
     margin-bottom:15px;
-
     text-shadow:0 0 20px #42bfff;
 }
 
@@ -83,14 +61,11 @@ html,body{
 #codeInput{
     width:100%;
     padding:16px;
-
     border-radius:13px;
     border:1px solid #397aff;
     outline:none;
-
     background:#050a1c;
     color:white;
-
     font-size:17px;
     text-align:center;
 }
@@ -103,32 +78,19 @@ html,body{
     width:100%;
     margin-top:12px;
     padding:15px;
-
     border:0;
     border-radius:13px;
-
     color:white;
     font-size:16px;
     font-weight:900;
-
     cursor:pointer;
-
-    background:
-        linear-gradient(
-            90deg,
-            #2378ff,
-            #7c3cff
-        );
-
-    box-shadow:
-        0 0 20px rgba(80,100,255,.3);
+    background:linear-gradient(90deg,#2378ff,#7c3cff);
+    box-shadow:0 0 20px rgba(80,100,255,.3);
 }
 
 #skipButton{
     background:rgba(255,255,255,.08);
-
     border:1px solid rgba(255,255,255,.15);
-
     box-shadow:none;
 }
 
@@ -139,47 +101,24 @@ html,body{
 #codeError{
     min-height:24px;
     margin-top:12px;
-
     color:#ff657e;
     font-weight:bold;
 }
 
-
-/* =========================
-   GAME
-========================= */
-
 #game{
     position:relative;
-
     width:100%;
     height:100%;
-
     overflow:hidden;
-
-    background:
-        linear-gradient(
-            #070b20 0%,
-            #101b3c 48%,
-            #162343 100%
-        );
+    background:linear-gradient(#070b20 0%,#101b3c 48%,#162343 100%);
 }
-
-
-/* =========================
-   STARS
-========================= */
 
 .star{
     position:absolute;
-
     width:3px;
     height:3px;
-
     border-radius:50%;
-
     background:white;
-
     opacity:.8;
 }
 
@@ -194,63 +133,34 @@ html,body{
 .s9{left:14%;top:37%}
 .s10{left:72%;top:35%}
 
-
-/* =========================
-   MOON
-========================= */
-
 #moon{
     position:absolute;
-
     width:100px;
     height:100px;
-
     border-radius:50%;
-
     right:9%;
     top:8%;
-
     background:#e8f2ff;
-
-    box-shadow:
-        0 0 45px rgba(180,220,255,.5);
+    box-shadow:0 0 45px rgba(180,220,255,.5);
 }
-
-
-/* =========================
-   CITY
-========================= */
 
 #city{
     position:absolute;
-
     bottom:30%;
     left:0;
-
     width:100%;
     height:27%;
-
     display:flex;
     align-items:flex-end;
-
     gap:5px;
-
     overflow:hidden;
 }
 
 .building{
     flex:1;
     min-width:40px;
-
-    background:
-        linear-gradient(
-            #111a39,
-            #080d20
-        );
-
-    border-top:
-        1px solid
-        rgba(90,150,255,.3);
+    background:linear-gradient(#111a39,#080d20);
+    border-top:1px solid rgba(90,150,255,.3);
 }
 
 .building:nth-child(1){height:50%}
@@ -266,150 +176,69 @@ html,body{
 .building:nth-child(11){height:49%}
 .building:nth-child(12){height:85%}
 
-
-/* =========================
-   ROAD
-========================= */
-
 #road{
     position:absolute;
-
     left:50%;
-
-    transform:
-        translateX(-50%);
-
+    transform:translateX(-50%);
     bottom:0;
-
     width:min(900px,92%);
     height:72%;
-
-    background:
-        linear-gradient(
-            90deg,
-            #080b16 0%,
-            #151a2c 50%,
-            #080b16 100%
-        );
-
-    clip-path:
-        polygon(
-            31% 0,
-            69% 0,
-            100% 100%,
-            0 100%
-        );
-
-    border-top:
-        2px solid
-        rgba(120,190,255,.35);
+    background:linear-gradient(90deg,#080b16 0%,#151a2c 50%,#080b16 100%);
+    clip-path:polygon(31% 0,69% 0,100% 100%,0 100%);
+    border-top:2px solid rgba(120,190,255,.35);
 }
-
-
-/* =========================
-   LANE LINES
-========================= */
 
 .laneLine{
     position:absolute;
-
     top:0;
-
     width:5px;
     height:100%;
-
-    background:
-        repeating-linear-gradient(
-            to bottom,
-            rgba(120,190,255,.7) 0px,
-            rgba(120,190,255,.7) 45px,
-            transparent 45px,
-            transparent 85px
-        );
-
+    background:repeating-linear-gradient(to bottom,rgba(120,190,255,.7) 0px,rgba(120,190,255,.7) 45px,transparent 45px,transparent 85px);
     opacity:.55;
 }
 
-#line1{
-    left:33%;
-}
-
-#line2{
-    left:67%;
-}
-
-
-/* =========================
-   PLAYER
-========================= */
+#line1{left:33%}
+#line2{left:67%}
 
 #player{
     position:absolute;
-
     left:50%;
     bottom:14%;
-
     width:52px;
     height:95px;
-
-    transform:
-        translateX(-50%);
-
-    transition:
-        left .18s ease;
-
+    transform:translateX(-50%);
+    transition:left .18s ease;
     z-index:20;
 }
 
 .head{
     position:absolute;
-
     top:0;
     left:13px;
-
     width:26px;
     height:26px;
-
     border-radius:50%;
-
     background:#e8f3ff;
-
-    box-shadow:
-        0 0 15px #55bfff;
+    box-shadow:0 0 15px #55bfff;
 }
 
 .body{
     position:absolute;
-
     top:27px;
     left:14px;
-
     width:24px;
     height:38px;
-
     border-radius:9px;
-
-    background:
-        linear-gradient(
-            #43baff,
-            #514cff
-        );
-
-    box-shadow:
-        0 0 18px
-        rgba(50,150,255,.6);
+    background:linear-gradient(#43baff,#514cff);
+    box-shadow:0 0 18px rgba(50,150,255,.6);
 }
 
 .arm{
     position:absolute;
-
     top:30px;
-
     width:9px;
     height:34px;
-
     border-radius:8px;
-
     background:#6d86ff;
 }
 
@@ -425,14 +254,10 @@ html,body{
 
 .leg{
     position:absolute;
-
     top:61px;
-
     width:10px;
     height:34px;
-
     border-radius:8px;
-
     background:#3949a5;
 }
 
@@ -446,11 +271,6 @@ html,body{
     transform:rotate(-4deg);
 }
 
-
-/* =========================
-   OBJECTS
-========================= */
-
 .object{
     position:absolute;
     z-index:15;
@@ -459,318 +279,169 @@ html,body{
 .obstacle{
     width:50px;
     height:55px;
-
     border-radius:9px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ff304f,
-            #8f1635
-        );
-
-    border:
-        2px solid
-        #ff7185;
-
-    box-shadow:
-        0 0 20px
-        rgba(255,40,80,.55),
-
-        inset 0 0 12px
-        rgba(255,255,255,.12);
+    background:linear-gradient(135deg,#ff304f,#8f1635);
+    border:2px solid #ff7185;
+    box-shadow:0 0 20px rgba(255,40,80,.55),inset 0 0 12px rgba(255,255,255,.12);
 }
 
 .obstacle:before{
     content:"";
-
     position:absolute;
-
     left:8px;
     right:8px;
     top:12px;
-
     height:6px;
-
     background:#ffb1bc;
-
-    box-shadow:
-        0 14px #ffb1bc;
-
+    box-shadow:0 14px #ffb1bc;
     opacity:.7;
 }
 
 .coin{
     width:30px;
     height:30px;
-
     border-radius:50%;
-
-    border:
-        4px solid
-        #ffe85a;
-
+    border:4px solid #ffe85a;
     background:#ffb700;
-
-    box-shadow:
-        0 0 15px #ffd42a,
-        inset 0 0 8px #fff6a0;
+    box-shadow:0 0 15px #ffd42a,inset 0 0 8px #fff6a0;
 }
-
-
-/* =========================
-   HUD
-========================= */
 
 #hud{
     position:absolute;
-
     top:15px;
     left:15px;
     right:15px;
-
     z-index:50;
-
     display:flex;
-
     justify-content:space-between;
-
     gap:10px;
 }
 
 .hudBox{
     min-width:100px;
-
     padding:10px 14px;
-
     border-radius:12px;
-
-    background:
-        rgba(3,8,25,.65);
-
-    border:
-        1px solid
-        rgba(110,170,255,.25);
-
-    backdrop-filter:
-        blur(8px);
-
+    background:rgba(3,8,25,.65);
+    border:1px solid rgba(110,170,255,.25);
+    backdrop-filter:blur(8px);
     color:white;
-
     font-weight:bold;
 }
 
 .hudLabel{
     font-size:11px;
-
     color:#8297c5;
-
     text-transform:uppercase;
 }
 
 .hudValue{
     margin-top:3px;
-
     font-size:19px;
 }
 
-
-/* =========================
-   TOUCH BUTTONS
-========================= */
-
 #touch{
     position:fixed;
-
     z-index:99999;
-
     left:0;
     right:0;
-
     bottom:25px;
-
     display:none;
-
     justify-content:space-between;
-
     align-items:center;
-
-    padding:
-        0 35px;
-
+    padding:0 35px;
     pointer-events:none;
-
     width:100%;
-
     height:110px;
 }
 
 .touchButton{
     width:90px;
     height:90px;
-
     flex-shrink:0;
-
     border-radius:22px;
-
     display:flex;
-
     justify-content:center;
     align-items:center;
-
     font-size:36px;
     font-weight:bold;
-
     color:white;
-
-    background:
-        rgba(30,60,140,.95);
-
-    border:
-        2px solid
-        rgba(120,190,255,.9);
-
-    box-shadow:
-        0 0 25px
-        rgba(50,130,255,.6);
-
+    background:rgba(30,60,140,.95);
+    border:2px solid rgba(120,190,255,.9);
+    box-shadow:0 0 25px rgba(50,130,255,.6);
     pointer-events:auto;
-
     position:relative;
-
     z-index:100000;
-
-    -webkit-tap-highlight-color:
-        transparent;
+    -webkit-tap-highlight-color:transparent;
 }
 
 .touchButton:active{
     transform:scale(.93);
-
-    background:
-        rgba(60,100,220,1);
+    background:rgba(60,100,220,1);
 }
-
-
-/* =========================
-   MENU
-========================= */
 
 #menu{
     position:absolute;
-
     inset:0;
-
     z-index:200;
-
     display:flex;
-
     justify-content:center;
     align-items:center;
-
-    background:
-        rgba(2,5,18,.48);
-
-    backdrop-filter:
-        blur(5px);
+    background:rgba(2,5,18,.48);
+    backdrop-filter:blur(5px);
 }
 
 .menuBox{
     width:min(520px,90%);
-
     padding:35px;
-
     text-align:center;
-
     border-radius:25px;
-
-    background:
-        rgba(6,12,32,.9);
-
-    border:
-        1px solid
-        rgba(100,180,255,.35);
-
-    box-shadow:
-        0 0 45px
-        rgba(20,80,255,.2);
+    background:rgba(6,12,32,.9);
+    border:1px solid rgba(100,180,255,.35);
+    box-shadow:0 0 45px rgba(20,80,255,.2);
 }
 
 .subtitle{
     color:#67c9ff;
-
     font-size:14px;
-
     font-weight:bold;
-
     letter-spacing:4px;
-
     margin-bottom:18px;
 }
 
 #menuText{
     color:#c7d5f5;
-
     line-height:1.8;
-
     margin-bottom:25px;
 }
 
 .startButton{
     width:100%;
-
     padding:17px;
-
     border:0;
-
     border-radius:14px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #168bff,
-            #713cff
-        );
-
+    background:linear-gradient(90deg,#168bff,#713cff);
     color:white;
-
     font-size:17px;
-
     font-weight:900;
-
     cursor:pointer;
-
-    box-shadow:
-        0 0 25px
-        rgba(50,100,255,.35);
+    box-shadow:0 0 25px rgba(50,100,255,.35);
 }
 
 .startButton:active{
     transform:scale(.98);
 }
 
-
-/* =========================
-   HANDY
-========================= */
-
 @media(max-width:600px){
-
     #touch{
         display:flex !important;
-
         bottom:20px;
-
-        padding:
-            0 18px;
-
+        padding:0 18px;
         height:90px;
     }
 
     .touchButton{
         width:76px;
         height:76px;
-
         font-size:30px;
     }
 
@@ -784,98 +455,58 @@ html,body{
 
     .hudBox{
         min-width:80px;
-
-        padding:
-            8px 10px;
+        padding:8px 10px;
     }
 
     .hudValue{
         font-size:16px;
     }
-
 }
 
-
-/* =========================
-   KLEINE HANDYS
-========================= */
-
 @media(max-width:380px){
-
     #touch{
-        padding:
-            0 12px;
+        padding:0 12px;
     }
 
     .touchButton{
         width:66px;
         height:66px;
-
         font-size:25px;
     }
 
     .hudBox{
         min-width:70px;
     }
-
 }
 
-
-/* =========================
-   TABLET
-========================= */
-
 @media(min-width:601px) and (max-width:1024px){
-
     #touch{
         display:flex !important;
-
         bottom:30px;
-
-        padding:
-            0 45px;
-
+        padding:0 45px;
         height:115px;
     }
 
     .touchButton{
         width:105px;
         height:105px;
-
         font-size:42px;
     }
-
 }
-
 </style>
 </head>
 
-
 <body>
 
-
-<!-- =========================
-     CODE SCREEN
-========================= -->
-
 <div id="codeScreen">
-
     <div id="codeBox">
-
-        <div id="codeTitle">
-            🔐 Zugang
-        </div>
+        <div id="codeTitle">🔐 Zugang</div>
 
         <div id="codeText">
-
             Du kannst einen Zugangscode eingeben.<br>
-
             Mit dem richtigen Code kannst du Hindernisse berühren,<br>
-
             ohne eliminiert zu werden.
-
         </div>
-
 
         <input
             id="codeInput"
@@ -885,39 +516,19 @@ html,body{
             spellcheck="false"
         >
 
-
-        <button
-            class="codeButton"
-            id="codeButton"
-        >
+        <button class="codeButton" id="codeButton">
             WEITER
         </button>
 
-
-        <button
-            class="codeButton"
-            id="skipButton"
-        >
+        <button class="codeButton" id="skipButton">
             ÜBERSPRINGEN
         </button>
 
-
         <div id="codeError"></div>
-
     </div>
-
 </div>
 
-
-
-<!-- =========================
-     GAME
-========================= -->
-
 <div id="game">
-
-
-    <!-- STARS -->
 
     <div class="star s1"></div>
     <div class="star s2"></div>
@@ -930,14 +541,9 @@ html,body{
     <div class="star s9"></div>
     <div class="star s10"></div>
 
-
     <div id="moon"></div>
 
-
-    <!-- CITY -->
-
     <div id="city">
-
         <div class="building"></div>
         <div class="building"></div>
         <div class="building"></div>
@@ -950,123 +556,52 @@ html,body{
         <div class="building"></div>
         <div class="building"></div>
         <div class="building"></div>
-
     </div>
-
-
-    <!-- ROAD -->
 
     <div id="road">
-
-        <div
-            class="laneLine"
-            id="line1"
-        ></div>
-
-        <div
-            class="laneLine"
-            id="line2"
-        ></div>
-
+        <div class="laneLine" id="line1"></div>
+        <div class="laneLine" id="line2"></div>
     </div>
-
-
-    <!-- PLAYER -->
 
     <div id="player">
-
         <div class="head"></div>
-
         <div class="body"></div>
-
         <div class="arm left"></div>
-
         <div class="arm right"></div>
-
         <div class="leg left"></div>
-
         <div class="leg right"></div>
-
     </div>
-
-
-    <!-- HUD -->
 
     <div id="hud">
 
         <div class="hudBox">
-
-            <div class="hudLabel">
-                Punkte
-            </div>
-
-            <div
-                class="hudValue"
-                id="score"
-            >
-                0
-            </div>
-
+            <div class="hudLabel">Punkte</div>
+            <div class="hudValue" id="score">0</div>
         </div>
 
-
         <div class="hudBox">
-
-            <div class="hudLabel">
-                Münzen
-            </div>
-
-            <div
-                class="hudValue"
-                id="coins"
-            >
-                0
-            </div>
-
+            <div class="hudLabel">Münzen</div>
+            <div class="hudValue" id="coins">0</div>
         </div>
 
-
         <div class="hudBox">
-
-            <div class="hudLabel">
-                Level
-            </div>
-
-            <div
-                class="hudValue"
-                id="difficulty"
-            >
-                1
-            </div>
-
+            <div class="hudLabel">Level</div>
+            <div class="hudValue" id="difficulty">1</div>
         </div>
 
     </div>
 
-
-    <!-- TOUCH BUTTONS -->
-
     <div id="touch">
 
-        <div
-            class="touchButton"
-            id="left"
-        >
+        <div class="touchButton" id="left">
             ◀
         </div>
 
-
-        <div
-            class="touchButton"
-            id="right"
-        >
+        <div class="touchButton" id="right">
             ▶
         </div>
 
     </div>
-
-
-    <!-- MENU -->
 
     <div id="menu">
 
@@ -1076,24 +611,14 @@ html,body{
                 ENDLESS RUN
             </div>
 
-
             <div id="menuText">
-
                 🏃 Laufe so weit du kannst!<br>
-
                 🪙 Sammle Münzen!<br>
-
                 🚧 Weiche Hindernissen aus!<br>
-
                 ⚡ Die Geschwindigkeit steigt langsam!
-
             </div>
 
-
-            <button
-                class="startButton"
-                id="start"
-            >
+            <button class="startButton" id="start">
                 SPIEL STARTEN
             </button>
 
@@ -1103,22 +628,21 @@ html,body{
 
 </div>
 
-
-
 <script>
 
-
 /* =========================
-   SUPABASE + CODE SYSTEM
+   SUPABASE
 ========================= */
 
-const SUPABASE_URL = "https://gojdovvvanvebznhqtfs.supabase.co";
+const SUPABASE_URL =
+    "https://gojdovvvanvebznhqtfs.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_1i9OJO4LY6_dILkcEbhCow_f64XK92v";
 
 const SUPABASE_FUNCTION_URL =
-    SUPABASE_URL + "/functions/v1/HyperRun";
+    SUPABASE_URL +
+    "/functions/v1/HyperRun";
 
 
 let codeUnlocked = false;
@@ -1157,11 +681,9 @@ async function hyperRunRequest(
     let data = {};
 
     try{
-
-        data =
-            await response.json();
-
-    }catch(e){}
+        data = await response.json();
+    }
+    catch(e){}
 
 
     if(
@@ -1178,7 +700,6 @@ async function hyperRunRequest(
 
 
     return data;
-
 }
 
 
@@ -1224,12 +745,10 @@ async function checkCode(){
             "❌ Bitte Code eingeben";
 
         return;
-
     }
 
 
-    codeButton.disabled =
-        true;
+    codeButton.disabled = true;
 
     codeError.textContent =
         "⏳ Prüfe Code...";
@@ -1249,43 +768,39 @@ async function checkCode(){
 
         if(result.unlocked){
 
-            codeUnlocked =
-                true;
+            codeUnlocked = true;
 
             codeScreen.style.display =
                 "none";
 
-            codeError.textContent =
-                "";
+            codeError.textContent = "";
 
-            codeInput.value =
-                "";
+            codeInput.value = "";
 
         }
-
         else{
 
             codeError.textContent =
                 "❌ Falscher Code";
 
-            codeInput.value =
-                "";
+            codeInput.value = "";
 
             codeInput.focus();
 
         }
 
-    }catch(error){
+    }
+    catch(error){
 
         codeError.textContent =
             "⚠️ Server nicht erreichbar";
 
         console.error(error);
 
-    }finally{
+    }
+    finally{
 
-        codeButton.disabled =
-            false;
+        codeButton.disabled = false;
 
     }
 
@@ -1296,8 +811,7 @@ skipButton.addEventListener(
     "click",
     function(){
 
-        codeUnlocked =
-            false;
+        codeUnlocked = false;
 
         codeScreen.style.display =
             "none";
@@ -1316,13 +830,8 @@ codeInput.addEventListener(
     "keydown",
     function(event){
 
-        if(
-            event.key ===
-            "Enter"
-        ){
-
+        if(event.key === "Enter"){
             checkCode();
-
         }
 
     }
@@ -1347,15 +856,15 @@ async function loadServerHighscore(){
                 result.highscore
             ) || 0;
 
-    }catch(error){
+    }
+    catch(error){
 
         console.error(
             "Highscore konnte nicht geladen werden:",
             error
         );
 
-        highscore =
-            0;
+        highscore = 0;
 
     }
 
@@ -1363,83 +872,51 @@ async function loadServerHighscore(){
 
 
 /* =========================
-   GAME VARIABLES
+   GAME
 ========================= */
 
 const player =
-    document.getElementById(
-        "player"
-    );
+    document.getElementById("player");
 
 const scoreDisplay =
-    document.getElementById(
-        "score"
-    );
+    document.getElementById("score");
 
 const coinsDisplay =
-    document.getElementById(
-        "coins"
-    );
+    document.getElementById("coins");
 
 const difficultyDisplay =
-    document.getElementById(
-        "difficulty"
-    );
+    document.getElementById("difficulty");
 
 const menu =
-    document.getElementById(
-        "menu"
-    );
+    document.getElementById("menu");
 
 const menuText =
-    document.getElementById(
-        "menuText"
-    );
+    document.getElementById("menuText");
 
 const startButton =
-    document.getElementById(
-        "start"
-    );
+    document.getElementById("start");
 
 
-let running =
-    false;
+let running = false;
 
-let lane =
-    1;
+let lane = 1;
 
-let score =
-    0;
+let score = 0;
 
-let coins =
-    0;
+let coins = 0;
 
+let speed = 4.5;
 
-/* LANGSAMER START */
+let difficulty = 1;
 
-let speed =
-    4.5;
+let spawnTimer = 0;
 
-let difficulty =
-    1;
+let objects = [];
 
-let spawnTimer =
-    0;
+let lastTime = 0;
 
-let objects =
-    [];
+let highscore = 0;
 
-let lastTime =
-    0;
-
-
-let highscore =
-    0;
-
-
-/* =========================
-   LANES
-========================= */
 
 const lanes = [
     35,
@@ -1457,7 +934,7 @@ function updatePlayer(){
 
 
 /* =========================
-   START GAME
+   START
 ========================= */
 
 async function startGame(){
@@ -1466,8 +943,7 @@ async function startGame(){
         return;
 
 
-    startButton.disabled =
-        true;
+    startButton.disabled = true;
 
 
     try{
@@ -1480,7 +956,8 @@ async function startGame(){
         hyperRunSessionId =
             result.sessionId;
 
-    }catch(error){
+    }
+    catch(error){
 
         console.error(error);
 
@@ -1488,39 +965,28 @@ async function startGame(){
             "⚠️ Server nicht erreichbar.<br><br>" +
             "Bitte kurz warten und erneut versuchen.";
 
-        startButton.disabled =
-            false;
+        startButton.disabled = false;
 
         return;
 
     }
 
 
-    startButton.disabled =
-        false;
+    startButton.disabled = false;
 
+    running = true;
 
-    running =
-        true;
+    lane = 1;
 
+    score = 0;
 
-    lane =
-        1;
+    coins = 0;
 
-    score =
-        0;
+    speed = 4.5;
 
-    coins =
-        0;
+    difficulty = 1;
 
-    speed =
-        4.5;
-
-    difficulty =
-        1;
-
-    spawnTimer =
-        0;
+    spawnTimer = 0;
 
     lastTime =
         performance.now();
@@ -1528,29 +994,22 @@ async function startGame(){
 
     objects.forEach(
         function(obj){
-
             obj.element.remove();
-
         }
     );
 
 
-    objects =
-        [];
+    objects = [];
 
 
-    scoreDisplay.textContent =
-        "0";
+    scoreDisplay.textContent = "0";
 
-    coinsDisplay.textContent =
-        "0";
+    coinsDisplay.textContent = "0";
 
-    difficultyDisplay.textContent =
-        "1";
+    difficultyDisplay.textContent = "1";
 
 
-    menu.style.display =
-        "none";
+    menu.style.display = "none";
 
 
     updatePlayer();
@@ -1564,15 +1023,13 @@ async function startGame(){
 
 
 /* =========================
-   SPAWN OBJECT
+   SPAWN
 ========================= */
 
 function spawnObject(){
 
     const element =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
 
     const obstacleChance =
@@ -1594,9 +1051,7 @@ function spawnObject(){
         );
 
 
-    element.classList.add(
-        "object"
-    );
+    element.classList.add("object");
 
 
     if(isObstacle){
@@ -1606,7 +1061,6 @@ function spawnObject(){
         );
 
     }
-
     else{
 
         element.classList.add(
@@ -1619,35 +1073,27 @@ function spawnObject(){
     element.style.left =
         lanes[randomLane] + "%";
 
-
     element.style.top =
         "-80px";
 
 
     document
-        .getElementById(
-            "game"
-        )
-        .appendChild(
-            element
-        );
+        .getElementById("game")
+        .appendChild(element);
 
 
     objects.push({
 
-        element:
-            element,
+        element: element,
 
-        lane:
-            randomLane,
+        lane: randomLane,
 
         type:
             isObstacle
             ? "obstacle"
             : "coin",
 
-        y:
-            -80
+        y: -80
 
     });
 
@@ -1658,9 +1104,7 @@ function spawnObject(){
    COLLISION
 ========================= */
 
-function checkCollision(
-    element
-){
+function checkCollision(element){
 
     const playerRect =
         player.getBoundingClientRect();
@@ -1687,12 +1131,10 @@ function checkCollision(
 
 
 /* =========================
-   MOVE OBJECTS
+   OBJECTS
 ========================= */
 
-function moveObjects(
-    delta
-){
+function moveObjects(delta){
 
     for(
         let i =
@@ -1717,62 +1159,38 @@ function moveObjects(
             obj.y + "px";
 
 
-        /* =====================
-           COIN
-        ===================== */
+        /* MÜNZE */
 
         if(
             obj.type === "coin" &&
             obj.lane === lane &&
-            checkCollision(
-                obj.element
-            )
+            checkCollision(obj.element)
         ){
 
-            /*
-              WICHTIG:
-              Die Münze gibt hier
-              NOCH KEINE Punkte.
-
-              Wir zählen nur die Münze.
-              Der +1000 Bonus wird
-              erst bei Game Over
-              berechnet.
-            */
+            // Nur Münze zählen.
+            // Noch KEINE Punkte vergeben.
 
             coins++;
 
 
             obj.element.remove();
 
-
             objects.splice(
                 i,
                 1
             );
 
-
             continue;
-
         }
 
 
-        /* =====================
-           HINDERNIS
-        ===================== */
+        /* HINDERNIS */
 
         if(
             obj.type === "obstacle" &&
             obj.lane === lane &&
-            checkCollision(
-                obj.element
-            )
+            checkCollision(obj.element)
         ){
-
-            /*
-              MIT CODE:
-              Spieler bleibt am Leben.
-            */
 
             if(codeUnlocked){
 
@@ -1781,11 +1199,6 @@ function moveObjects(
             }
 
 
-            /*
-              OHNE CODE:
-              normales Spiel.
-            */
-
             gameOver();
 
             return;
@@ -1793,9 +1206,7 @@ function moveObjects(
         }
 
 
-        /* =====================
-           ENTFERNEN
-        ===================== */
+        /* ENTFERNEN */
 
         if(
             obj.y >
@@ -1803,7 +1214,6 @@ function moveObjects(
         ){
 
             obj.element.remove();
-
 
             objects.splice(
                 i,
@@ -1821,55 +1231,34 @@ function moveObjects(
    GAME LOOP
 ========================= */
 
-function gameLoop(
-    timestamp
-){
+function gameLoop(timestamp){
 
-    if(!running){
-
+    if(!running)
         return;
-
-    }
 
 
     const delta =
         Math.min(
             40,
-            timestamp -
-            lastTime
+            timestamp - lastTime
         );
 
 
-    lastTime =
-        timestamp;
+    lastTime = timestamp;
 
 
-    /*
-      NORMALE PUNKTE
-      laufen ganz normal weiter.
-    */
-
+    // Normale Punkte
     score +=
         0.055 *
         speed *
         delta;
 
 
-    /*
-      Level weiterhin
-      alle 500 normale Punkte.
-    */
-
     difficulty =
         Math.floor(
             score / 500
         ) + 1;
 
-
-    /*
-      Geschwindigkeit
-      steigt sehr langsam.
-    */
 
     speed =
         4.5 +
@@ -1879,13 +1268,7 @@ function gameLoop(
         0.25;
 
 
-    /*
-      Hindernisse kommen
-      langsam häufiger.
-    */
-
-    spawnTimer +=
-        delta;
+    spawnTimer += delta;
 
 
     const spawnInterval =
@@ -1903,33 +1286,22 @@ function gameLoop(
 
         spawnObject();
 
-        spawnTimer =
-            0;
+        spawnTimer = 0;
 
     }
 
 
-    moveObjects(
-        delta
-    );
+    moveObjects(delta);
 
 
-    /*
-      Während des Spiels
-      werden NUR die normalen
-      Punkte angezeigt.
-
-      Der Münzbonus kommt
-      erst bei Game Over.
-    */
+    // Während des Spiels werden
+    // nur normale Punkte angezeigt.
 
     scoreDisplay.textContent =
         Math.floor(score);
 
-
     coinsDisplay.textContent =
         coins;
-
 
     difficultyDisplay.textContent =
         difficulty;
@@ -1952,39 +1324,27 @@ async function gameOver(){
         return;
 
 
-    running =
-        false;
+    running = false;
 
 
-    /*
-      NORMALE PUNKTE
-    */
-
+    // Normale Punkte
     const normalScore =
         Math.floor(score);
 
 
-    /*
-      MÜNZ-BONUS
-      Jede Münze = 1000 Punkte
-    */
+    // Jede Münze = 1000 Punkte
+    const finalCoins =
+        Math.floor(coins);
+
 
     const coinBonus =
-        Math.floor(coins) *
-        1000;
+        finalCoins * 1000;
 
 
-    /*
-      ENDGÜLTIGE PUNKTE
-    */
-
+    // Endgültiger Score
     const finalScore =
         normalScore +
         coinBonus;
-
-
-    const finalCoins =
-        Math.floor(coins);
 
 
     const finalLevel =
@@ -2003,10 +1363,6 @@ async function gameOver(){
         finalLevel;
 
 
-    /*
-      ERGEBNIS AN SUPABASE SENDEN
-    */
-
     if(hyperRunSessionId){
 
         try{
@@ -2018,6 +1374,7 @@ async function gameOver(){
                         sessionId:
                             hyperRunSessionId,
 
+                        // Bereits fertiger Score
                         score:
                             finalScore,
 
@@ -2028,21 +1385,15 @@ async function gameOver(){
 
 
             serverScore =
-                Number(
-                    result.score
-                ) || finalScore;
+                Number(result.score);
 
 
             serverCoins =
-                Number(
-                    result.coins
-                ) || finalCoins;
+                Number(result.coins);
 
 
             serverLevel =
-                Number(
-                    result.level
-                ) || finalLevel;
+                Number(result.level);
 
 
             highscore =
@@ -2051,26 +1402,30 @@ async function gameOver(){
                     serverScore
                 );
 
-
-        }catch(error){
+        }
+        catch(error){
 
             console.error(
                 "Runde konnte nicht gespeichert werden:",
                 error
             );
 
+            serverScore =
+                finalScore;
+
+            serverCoins =
+                finalCoins;
+
+            serverLevel =
+                finalLevel;
+
         }
 
 
-        hyperRunSessionId =
-            null;
+        hyperRunSessionId = null;
 
     }
 
-
-    /*
-      ENDERGEBNIS
-    */
 
     menuText.innerHTML =
         "💥 Runde beendet!<br><br>" +
@@ -2099,16 +1454,13 @@ async function gameOver(){
 
 
 /* =========================
-   LINKS
+   STEUERUNG
 ========================= */
 
 function moveLeft(){
 
-    if(!running){
-
+    if(!running)
         return;
-
-    }
 
 
     if(lane > 0){
@@ -2122,17 +1474,10 @@ function moveLeft(){
 }
 
 
-/* =========================
-   RECHTS
-========================= */
-
 function moveRight(){
 
-    if(!running){
-
+    if(!running)
         return;
-
-    }
 
 
     if(lane < 2){
@@ -2146,20 +1491,13 @@ function moveRight(){
 }
 
 
-/* =========================
-   PC TASTATUR
-========================= */
-
 document.addEventListener(
     "keydown",
     function(event){
 
         if(
-            event.key ===
-            "ArrowLeft" ||
-
-            event.key.toLowerCase() ===
-            "a"
+            event.key === "ArrowLeft" ||
+            event.key.toLowerCase() === "a"
         ){
 
             moveLeft();
@@ -2168,11 +1506,8 @@ document.addEventListener(
 
 
         if(
-            event.key ===
-            "ArrowRight" ||
-
-            event.key.toLowerCase() ===
-            "d"
+            event.key === "ArrowRight" ||
+            event.key.toLowerCase() === "d"
         ){
 
             moveRight();
@@ -2183,14 +1518,8 @@ document.addEventListener(
 );
 
 
-/* =========================
-   TOUCH LINKS
-========================= */
-
 document
-    .getElementById(
-        "left"
-    )
+    .getElementById("left")
     .addEventListener(
         "pointerdown",
         function(event){
@@ -2203,14 +1532,8 @@ document
     );
 
 
-/* =========================
-   TOUCH RECHTS
-========================= */
-
 document
-    .getElementById(
-        "right"
-    )
+    .getElementById("right")
     .addEventListener(
         "pointerdown",
         function(event){
@@ -2223,19 +1546,11 @@ document
     );
 
 
-/* =========================
-   START
-========================= */
-
 startButton.addEventListener(
     "click",
     startGame
 );
 
-
-/* =========================
-   INITIAL POSITION
-========================= */
 
 updatePlayer();
 
